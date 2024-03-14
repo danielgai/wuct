@@ -1,10 +1,4 @@
-// import 'dart:ffi';
-// import 'package:flutter/material.dart';
-// import 'package:wuct/pages/WUCT_home.dart';
-// import 'package:wuct/pages/Loading.dart';
-// import 'package:wuct/pages/web_view_container.dart';
-// import 'package:webview_flutter/webview_flutter.dart';
-//
+
 // void main() => runApp(MaterialApp(
 //   //runs MaterialApp, which is root widget
 //  // home: Home(),
@@ -42,47 +36,34 @@
 //   }
 // }
 
+import 'dart:ffi';
+import 'package:wuct/pages/WUCT_home.dart';
+import 'package:wuct/pages/Loading.dart';
+import 'package:wuct/pages/web_view_container.dart';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'src/web_view_stack.dart';
+import 'package:wuct/pages/campus_map.dart';
 
 void main() {
+
   runApp(
-    const MaterialApp(
+    MaterialApp(
       //theme: ThemeData(useMaterial3: true),
-      home: WebViewApp(),
+      //initialRoute: '/home',
+ routes:{
+    '/': (context) => Loading(),
+   //normally will be Loading() but you're learning google maps
+    '/home': (context) =>WUCTHome(),
+    '/webViewContainer': (context) => WebViewApp(),
+   '/campusMap': (context) => CampusMap(),
+
+  },
+    // home: WebViewApp(),
+      //throws an error if you have both home property and / cause of redundancy
+      //will comment OUT home property here for now
+
     ),
   );
 }
 
-class WebViewApp extends StatefulWidget {
-  const WebViewApp({super.key});
-
-  @override
-  State<WebViewApp> createState() => _WebViewAppState();
-}
-
-class _WebViewAppState extends State<WebViewApp> {
-  late final WebViewController controller;
-
-  @override
-  void initState() {
-    super.initState();
-    controller = WebViewController()
-      ..loadRequest(
-        Uri.parse('https://wuct.wustl.edu/wuctschedule'),
-      );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Flutter WebView'),
-      ),
-      body: WebViewWidget(
-        controller: controller,
-      ),
-    );
-  }
-}

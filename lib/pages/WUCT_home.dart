@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:wuct/pages/web_view_container.dart';
+import 'package:wuct/pages/webview_button.dart';
+import 'package:wuct/pages/button.dart';
 
 class WUCTHome extends StatefulWidget {
   //const WUCTHome({Key? key}) : super(key: key);
@@ -9,31 +11,71 @@ class WUCTHome extends StatefulWidget {
   State<WUCTHome> createState() => _WUCTHomeState();
 }
 
+
 class _WUCTHomeState extends State<WUCTHome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/WUCT_Home.png'),
+              fit: BoxFit.cover,
+              alignment: Alignment(0.0, -0.25),
+            ),
+          ),
+        ),
 
-        title: Image.asset('assets/WUCT_Home.png',
-          fit: BoxFit.contain,
-          height: 72,),
-        centerTitle: true,
-        toolbarHeight: 88,
+        // title: Text(
+        //   'WashU Chemistry Tournament',
+        //   style: TextStyle(
+        //     fontWeight: FontWeight.bold,
+        //   ),
+        // ),
+        // centerTitle: true,
+        toolbarHeight: 111,
         actions: [
-          IconButton(onPressed: () => {}, icon: Icon(Icons.search)),
+          IconButton(
+            onPressed: () {},
+            icon: Icon(Icons.search),
+          ),
         ],
-
-//list of Icons.
-      //login, person_add
-
-
-
-//use control q to see stuff
       ),
 
       //expanded widget to take whole space
-      body: Text('random'),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Row(
+            children: [
+            Button(action: (){}, label: 'Login', icon: Icons.login),
+              Button(action: (){}, label: 'Registration', icon: Icons.person_add),
+              WebButton(url: 'https://wuct.wustl.edu/mobileschedule.html', label: 'Schedule', icon: Icons.event),
+            ],
+          ),
+        Row(
+          children: [
+            Button(action: (){}, label: 'Find Room', icon: Icons.directions),
+            Button(action: (){}, label: 'Notifications', icon: Icons.notifications),
+            WebButton(url: 'https://wuct.wustl.edu/faq.html', label: 'FAQs', icon: Icons.help),
+            //potentially code FAQ yourself, or replace w something else.
+            //like waivers or something
+          ],
+        ),
+        Row(
+          children:[
+            WebButton(url: 'https://wuct.wustl.edu/mobileabout.html', label: 'About', icon: Icons.info),
+            Button(action: (){}, label: 'Feedback', icon: Icons.chat),
+            Button(action: (){}, label: 'Social', icon: Icons.share),
+
+          ]
+        ),],
+      ),
+      //listview or iterate through to output buttons?
+      //account for different rows(?)
+
+      backgroundColor: Colors.white,
       //the minute we have a child, the container
       //restricts itself to the size of child widget
 

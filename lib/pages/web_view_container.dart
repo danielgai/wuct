@@ -1,24 +1,45 @@
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:flutter/material.dart';
-class WebViewContainer extends StatefulWidget {
-//  const WebViewContainer({Key? key}) : super(key: key);
-//can this clas be the "webview button" class?
+
+class WebViewApp extends StatefulWidget {
+  const WebViewApp({super.key});
+
   @override
-  State<WebViewContainer> createState() => _WebViewContainerState();
+  State<WebViewApp> createState() => _WebViewAppState();
 }
 
-class _WebViewContainerState extends State<WebViewContainer> {
-  //initialize webview here
+class _WebViewAppState extends State<WebViewApp> {
+  late final WebViewController controller;
+  String url = '';
+ // String pageName = '';
+  //bool isLoading = true;
 
-  final controller = WebViewController()
-  ..setJavaScriptMode(JavaScriptMode.disabled)
-  ..loadRequest(Uri.parse('https://flutter.dev/'));
+  @override
+  void initState() {
+    super.initState();
+    //two dots means it will create the controller object
+    //then sequentially run the method on that object
+
+  }
 
   @override
   Widget build(BuildContext context) {
+
+    url = ModalRoute.of(context)!.settings.arguments as String;
+
+
+    controller = WebViewController()
+      ..loadRequest(
+        Uri.parse(url),
+      );
+
     return Scaffold(
-      appBar: AppBar(title: Text("WebView Container")),
-      body: WebViewWidget(controller: controller),
+      appBar: AppBar(
+        title: const Text('WUCT'),
+      ),
+      body: WebViewWidget(
+        controller: controller,
+      ),
     );
   }
 }
