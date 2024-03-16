@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "228583552120",
+    "firebase_url": "https://wuct-mobile-default-rtdb.firebaseio.com",
+    "project_id": "wuct-mobile",
+    "storage_bucket": "wuct-mobile.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:228583552120:android:96d468936846adf3cf298d",
+        "android_client_info": {
+          "package_name": "com.wusea.wuct"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDf4l_-FEgFIqtSKF1D_HOQXr21izJ3T80"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

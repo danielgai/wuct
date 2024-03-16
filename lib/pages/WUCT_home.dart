@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:wuct/pages/web_view_container.dart';
-import 'package:wuct/pages/webview_button.dart';
-import 'package:wuct/pages/button.dart';
+import 'package:wuct/pages/buttons/webview_button.dart';
+import 'package:wuct/pages/buttons/button.dart';
 
 class WUCTHome extends StatefulWidget {
   //const WUCTHome({Key? key}) : super(key: key);
@@ -49,7 +49,7 @@ class _WUCTHomeState extends State<WUCTHome> {
         children: [
           Row(
             children: [
-            Button(action: (){}, label: 'Login', icon: Icons.login),
+            Button(action: (){ Navigator.of(context).pushNamed('/login');}, label: 'Login', icon: Icons.login),
               Button(action: (){}, label: 'Registration', icon: Icons.person_add),
               WebButton(url: 'https://wuct.wustl.edu/mobileschedule.html', label: 'Schedule', icon: Icons.event),
             ],

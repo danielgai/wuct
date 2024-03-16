@@ -37,6 +37,7 @@
 // }
 
 import 'dart:ffi';
+import 'package:wuct/pages/Teams/login.dart';
 import 'package:wuct/pages/WUCT_home.dart';
 import 'package:wuct/pages/Loading.dart';
 import 'package:wuct/pages/web_view_container.dart';
@@ -45,7 +46,29 @@ import 'package:webview_flutter/webview_flutter.dart';
 import 'src/web_view_stack.dart';
 import 'package:wuct/pages/campus_map.dart';
 
-void main() {
+//firebase
+import 'package:firebase_core/firebase_core.dart';
+//installed core firebase library. If we want
+//specific firebase services like firestore databse
+//we have to install separate package for those
+
+import 'firebase_options.dart';
+
+// ...
+
+
+
+void main() async{
+WidgetsFlutterBinding.ensureInitialized();
+//this allows Firebase to use platform channels to call native code
+//which it needs to do to initialize itself. w/o it, Firebase may
+  //not work correctly in app
+
+//paste in BEFORE you run the app. Needs to get firebase ready before it starts
+//connect to app in firebase before the app actually starts
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
   runApp(
     MaterialApp(
@@ -57,6 +80,7 @@ void main() {
     '/home': (context) =>WUCTHome(),
     '/webViewContainer': (context) => WebViewApp(),
    '/campusMap': (context) => CampusMap(),
+   '/login': (context) => LoginPage(),
 
   },
     // home: WebViewApp(),
