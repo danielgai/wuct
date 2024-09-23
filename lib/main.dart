@@ -37,6 +37,7 @@
 // }
 
 import 'dart:ffi';
+import 'package:wuct/button_pages/socials.dart';
 import 'package:wuct/pages/Teams/login.dart';
 import 'package:wuct/pages/WUCT_home.dart';
 import 'package:wuct/pages/Loading.dart';
@@ -45,7 +46,10 @@ import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'src/web_view_stack.dart';
 import 'package:wuct/pages/campus_map.dart';
-
+import 'package:wuct/button_pages/socials.dart';
+import 'package:wuct/button_pages/registration.dart';
+import 'package:wuct/button_pages/feedback.dart';
+import 'package:wuct/button_pages/notifications.dart';
 //firebase
 import 'package:firebase_core/firebase_core.dart';
 //installed core firebase library. If we want
@@ -77,10 +81,15 @@ WidgetsFlutterBinding.ensureInitialized();
  routes:{
     '/': (context) => Loading(),
    //normally will be Loading() but you're learning google maps
-    '/home': (context) =>WUCTHome(),
+    '/home': (context) => WUCTHome(),
     '/webViewContainer': (context) => WebViewApp(),
    '/campusMap': (context) => CampusMap(),
    '/login': (context) => LoginPage(),
+  //'/socials': (context) => Socials(),
+   '/registration': (context) => Registration(),
+    '/notifications': (context) => Notifications(),
+   '/feedback': (context) => FeedB(),
+
 
   },
     // home: WebViewApp(),
