@@ -84,7 +84,7 @@ class _WUCTHomeState extends State<WUCTHome> {
       floatingActionButton: FloatingActionButton(
         onPressed: null,
         backgroundColor: Colors.green[900],
-        child: const Text('click me'),
+        child: const Icon(Icons.add),
       ),
 
     );
