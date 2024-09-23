@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:webview_flutter/webview_flutter.dart';
-import 'package:wuct/pages/web_view_container.dart';
 import 'package:wuct/pages/buttons/webview_button.dart';
 import 'package:wuct/pages/buttons/button.dart';
 
 class WUCTHome extends StatefulWidget {
+  const WUCTHome({super.key});
+
   //const WUCTHome({Key? key}) : super(key: key);
 
   @override
@@ -18,7 +18,7 @@ class _WUCTHomeState extends State<WUCTHome> {
     return Scaffold(
       appBar: AppBar(
         flexibleSpace: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             image: DecorationImage(
               image: AssetImage('assets/WUCT_Home.png'),
               fit: BoxFit.cover,
@@ -38,7 +38,7 @@ class _WUCTHomeState extends State<WUCTHome> {
         actions: [
           IconButton(
             onPressed: () {},
-            icon: Icon(Icons.search),
+            icon: const Icon(Icons.search),
           ),
         ],
       ),
@@ -82,9 +82,9 @@ class _WUCTHomeState extends State<WUCTHome> {
 
 
       floatingActionButton: FloatingActionButton(
-        child: Text('click me'),
         onPressed: null,
         backgroundColor: Colors.green[900],
+        child: const Text('click me'),
       ),
 
     );

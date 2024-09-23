@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:wuct/pages/web_view_container.dart';
 
 class WebButton extends StatelessWidget{
   //const WebButton({Key? key}) : super(key: key);
@@ -9,20 +8,21 @@ class WebButton extends StatelessWidget{
   final IconData icon;
 
 
-  WebButton({required this.url, required this.label, required this.icon});
+  WebButton({super.key, required this.url, required this.label, required this.icon});
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
+      flex: 3,
       child: ElevatedButton(
         onPressed: (){
           Navigator.of(context).pushNamed('/webViewContainer', arguments: url);
         },
         style: ButtonStyle(
-          elevation: MaterialStateProperty.all(0), // Remove elevation
-          overlayColor: MaterialStateProperty.all(Colors.transparent), // Remove overlay color
-          shadowColor: MaterialStateProperty.all(Colors.transparent), // Remove shadow color
-          shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(0))), // Remove border
+          elevation: WidgetStateProperty.all(0), // Remove elevation
+          overlayColor: WidgetStateProperty.all(Colors.transparent), // Remove overlay color
+          shadowColor: WidgetStateProperty.all(Colors.transparent), // Remove shadow color
+          shape: WidgetStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(0))), // Remove border
         ),
         child: Column(
           children:[
@@ -31,10 +31,10 @@ class WebButton extends StatelessWidget{
               size: 100,
               color: Colors.green[900],
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             Text(
                 label,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
                 )
@@ -42,7 +42,6 @@ class WebButton extends StatelessWidget{
           ],
         ),
       ),
-      flex: 3,
     );
   }
 

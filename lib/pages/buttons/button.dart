@@ -5,7 +5,7 @@ class Button extends StatelessWidget {
   final Function() action;
   final IconData icon;
 
-  Button({required this.action, required this.label, required this.icon});
+  Button({super.key, required this.action, required this.label, required this.icon});
 
   @override
   Widget build(BuildContext context) {
@@ -16,13 +16,14 @@ class Button extends StatelessWidget {
       // label: Text(label),
 
 Expanded(
+      flex: 3,
       child: ElevatedButton(
         onPressed: action,
         style: ButtonStyle(
-          elevation: MaterialStateProperty.all(0), // Remove elevation
-          overlayColor: MaterialStateProperty.all(Colors.transparent), // Remove overlay color
-          shadowColor: MaterialStateProperty.all(Colors.transparent), // Remove shadow color
-          shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(0))), // Remove border
+          elevation: WidgetStateProperty.all(0), // Remove elevation
+          overlayColor: WidgetStateProperty.all(Colors.transparent), // Remove overlay color
+          shadowColor: WidgetStateProperty.all(Colors.transparent), // Remove shadow color
+          shape: WidgetStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(0))), // Remove border
         ),
         child: Column(
           children:[
@@ -31,10 +32,10 @@ Expanded(
               size: 100,
               color: Colors.green[900],
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             Text(
                 label,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 14,
 
                   fontWeight: FontWeight.bold,
@@ -43,7 +44,6 @@ Expanded(
           ],
         ),
       ),
-  flex: 3,
 );
       // size: 100,
       // color: Colors.green[900],

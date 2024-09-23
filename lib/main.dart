@@ -36,14 +36,11 @@
 //   }
 // }
 
-import 'dart:ffi';
 import 'package:wuct/pages/Teams/login.dart';
 import 'package:wuct/pages/WUCT_home.dart';
 import 'package:wuct/pages/Loading.dart';
 import 'package:wuct/pages/web_view_container.dart';
 import 'package:flutter/material.dart';
-import 'package:webview_flutter/webview_flutter.dart';
-import 'src/web_view_stack.dart';
 import 'package:wuct/pages/campus_map.dart';
 
 //firebase
@@ -75,12 +72,12 @@ WidgetsFlutterBinding.ensureInitialized();
       //theme: ThemeData(useMaterial3: true),
       //initialRoute: '/home',
  routes:{
-    '/': (context) => Loading(),
+    '/': (context) => const Loading(),
    //normally will be Loading() but you're learning google maps
-    '/home': (context) =>WUCTHome(),
-    '/webViewContainer': (context) => WebViewApp(),
-   '/campusMap': (context) => CampusMap(),
-   '/login': (context) => LoginPage(),
+    '/home': (context) =>const WUCTHome(),
+    '/webViewContainer': (context) => const WebViewApp(),
+   '/campusMap': (context) => const CampusMap(),
+   '/login': (context) => const LoginPage(),
 
   },
     // home: WebViewApp(),

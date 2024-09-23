@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:wuct/pages/map_page.dart';
 
@@ -7,11 +6,11 @@ void main(){
 }
 
 class CampusMap extends StatelessWidget {
-  const CampusMap({Key? key}) : super(key: key); // Corrected constructor syntax
+  const CampusMap({super.key}); // Corrected constructor syntax
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       title: 'Campus Map',
       home: MapPage(),
     );

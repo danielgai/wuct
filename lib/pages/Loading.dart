@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class Loading extends StatefulWidget {
+  const Loading({super.key});
+
   @override
   State<Loading> createState() => _LoadingState();
 }
@@ -14,7 +16,7 @@ class _LoadingState extends State<Loading> with SingleTickerProviderStateMixin {
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: Duration(seconds: 2), // Change duration to 4 seconds
+      duration: const Duration(seconds: 2), // Change duration to 4 seconds
     );
     _controller.forward().whenComplete(() {
       setupWUCTHome(context);
@@ -42,7 +44,7 @@ class _LoadingState extends State<Loading> with SingleTickerProviderStateMixin {
                     color: Colors.green[900],
                     height: MediaQuery.of(context).size.height,
                     width: MediaQuery.of(context).size.width,
-                    child: Center(
+                    child: const Center(
                       child: SpinKitPulse(
                         color: Colors.white,
                         size: 50.0,
