@@ -3,6 +3,10 @@ import 'package:webview_flutter/webview_flutter.dart';
 import 'package:wuct/pages/web_view_container.dart';
 import 'package:wuct/pages/buttons/webview_button.dart';
 import 'package:wuct/pages/buttons/button.dart';
+import 'package:wuct/button_pages/socials.dart';
+import 'package:wuct/button_pages/registration.dart';
+import 'package:wuct/button_pages/feedback.dart';
+import 'package:wuct/button_pages/notifications.dart';
 
 class WUCTHome extends StatefulWidget {
   //const WUCTHome({Key? key}) : super(key: key);
@@ -50,14 +54,14 @@ class _WUCTHomeState extends State<WUCTHome> {
           Row(
             children: [
             Button(action: (){ Navigator.of(context).pushNamed('/login');}, label: 'Login', icon: Icons.login),
-              Button(action: (){}, label: 'Registration', icon: Icons.person_add),
+              Button(action: (){Navigator.of(context).pushNamed('/registration');}, label: 'Registration', icon: Icons.person_add),
               WebButton(url: 'https://wuct.wustl.edu/mobileschedule.html', label: 'Schedule', icon: Icons.event),
             ],
           ),
         Row(
           children: [
             Button(action: (){}, label: 'Find Room', icon: Icons.directions),
-            Button(action: (){}, label: 'Notifications', icon: Icons.notifications),
+            Button(action: (){Navigator.of(context).pushNamed('/notifications');}, label: 'Notifications', icon: Icons.notifications),
             WebButton(url: 'https://wuct.wustl.edu/faq.html', label: 'FAQs', icon: Icons.help),
             //potentially code FAQ yourself, or replace w something else.
             //like waivers or something
@@ -66,8 +70,8 @@ class _WUCTHomeState extends State<WUCTHome> {
         Row(
           children:[
             WebButton(url: 'https://wuct.wustl.edu/mobileabout.html', label: 'About', icon: Icons.info),
-            Button(action: (){}, label: 'Feedback', icon: Icons.chat),
-            Button(action: (){}, label: 'Social', icon: Icons.share),
+            Button(action: (){Navigator.of(context).pushNamed('/feedback');}, label: 'Feedback', icon: Icons.chat),
+            Button(action: (){Navigator.of(context).pushNamed('/socials');}, label: 'Social', icon: Icons.share),
 
           ]
         ),],
@@ -81,11 +85,11 @@ class _WUCTHomeState extends State<WUCTHome> {
 
 
 
-      floatingActionButton: FloatingActionButton(
-        child: Text('click me'),
-        onPressed: null,
-        backgroundColor: Colors.green[900],
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   child: Text('click me'),
+      //   onPressed: null,
+      //   backgroundColor: Colors.green[900],
+      // ),
 
     );
   }

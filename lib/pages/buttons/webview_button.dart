@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wuct/pages/web_view_container.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 
 class WebButton extends StatelessWidget{
   //const WebButton({Key? key}) : super(key: key);
@@ -14,6 +15,7 @@ class WebButton extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return Expanded(
+      flex: 3,
       child: ElevatedButton(
         onPressed: (){
           Navigator.of(context).pushNamed('/webViewContainer', arguments: url);
@@ -42,7 +44,7 @@ class WebButton extends StatelessWidget{
           ],
         ),
       ),
-      flex: 3,
+
     );
   }
 

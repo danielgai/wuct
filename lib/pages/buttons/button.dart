@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 
 class Button extends StatelessWidget {
   String label = "";
@@ -16,6 +17,7 @@ class Button extends StatelessWidget {
       // label: Text(label),
 
 Expanded(
+  flex: 3,
       child: ElevatedButton(
         onPressed: action,
         style: ButtonStyle(
@@ -43,7 +45,7 @@ Expanded(
           ],
         ),
       ),
-  flex: 3,
+
 );
       // size: 100,
       // color: Colors.green[900],
