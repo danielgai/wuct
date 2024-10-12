@@ -109,7 +109,7 @@ class _LoginPageState extends State<LoginPage> {
                 const SizedBox(height: 24),
                 StyledButton(
                   onPressed: () async {
-                    if(!_formKey.currentState!.validate()) return;
+                    if (!_formKey.currentState!.validate()) return;
                     final email = _emailController.text.trim();
                     final password = _passwordController.text.trim();
                   },

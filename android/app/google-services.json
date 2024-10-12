@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "119351435657",
+    "project_id": "wuct-f27b5",
+    "storage_bucket": "wuct-f27b5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:119351435657:android:0106c9c8ce8d1e5f4c0158",
+        "android_client_info": {
+          "package_name": "com.example.wuct"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC3y1JDHL8sRPgc6y7UEJGc26N3XtqxS_U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

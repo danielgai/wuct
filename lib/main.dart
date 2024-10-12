@@ -6,11 +6,18 @@ import 'package:wuct/pages/web_view_container.dart';
 import 'package:wuct/pages/wuct_home.dart';
 import 'package:wuct/services/screen_stack_observer.dart';
 
-void main() {
-  WidgetsFlutterBinding.ensureInitialized();
-//this allows Firebase to use platform channels to call native code
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+
+void main() async {
+  //this allows Firebase to use platform channels to call native code
 //which it needs to do to initialize itself. w/o it, Firebase may
   //not work correctly in app
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
 //paste in BEFORE you run the app. Needs to get firebase ready before it starts
 //connect to app in firebase before the app actually starts
