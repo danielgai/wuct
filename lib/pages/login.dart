@@ -57,7 +57,6 @@ class _LoginPageState extends State<LoginPage> {
 
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _washuIDController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +74,7 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const Center(child: StyledHeading('Welcome.')),
+                const Center(child: StyledHeading('Welcome Back.')),
                 const SizedBox(height: 16),
                 const Center(child: StyledBodyText('Sign into your account')),
                 const SizedBox(height: 16),
@@ -83,21 +82,37 @@ class _LoginPageState extends State<LoginPage> {
                   controller: _emailController,
                   keyboardType: TextInputType.emailAddress,
                   decoration: const InputDecoration(labelText: 'Email'),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Please enter your email";
+                    }
+                    final emailRegex = RegExp(
+                        r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
+                    if (!emailRegex.hasMatch(value)) {
+                      return "Please enter a valid email";
+                    }
+                    return null;
+                  },
                 ),
                 const SizedBox(height: 16),
                 TextFormField(
                   controller: _passwordController,
                   obscureText: true,
                   decoration: const InputDecoration(labelText: 'Password'),
-                ),
-                const SizedBox(height: 16),
-                TextFormField(
-                  controller: _washuIDController,
-                  decoration: const InputDecoration(labelText: 'WashU ID'),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Please enter a password";
+                    }
+                    return null;
+                  },
                 ),
                 const SizedBox(height: 24),
                 StyledButton(
-                  onPressed: () async {},
+                  onPressed: () async {
+                    if(!_formKey.currentState!.validate()) return;
+                    final email = _emailController.text.trim();
+                    final password = _passwordController.text.trim();
+                  },
                   child: const StyledButtonText('Sign in'),
                 ),
                 const SizedBox(height: 16),

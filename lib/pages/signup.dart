@@ -42,21 +42,56 @@ class _SignupFormState extends State<SignupForm> {
                   controller: _emailController,
                   keyboardType: TextInputType.emailAddress,
                   decoration: const InputDecoration(labelText: 'Email'),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Please enter your email";
+                    }
+                    final emailRegex = RegExp(
+                        r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
+                    if (!emailRegex.hasMatch(value)) {
+                      return "Please enter a valid email";
+                    }
+                    return null;
+                  },
                 ),
                 const SizedBox(height: 16),
                 TextFormField(
                   controller: _passwordController,
                   obscureText: true,
                   decoration: const InputDecoration(labelText: 'Password'),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Please enter a password";
+                    }
+                    if (value.length < 8) {
+                      return "Password must be 8 chars long";
+                    }
+                    return null;
+                  },
                 ),
                 const SizedBox(height: 16),
                 TextFormField(
                   controller: _washuIDController,
                   decoration: const InputDecoration(labelText: 'WashU ID'),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Please enter your WashU ID";
+                    }
+                    if (value.length != 6) {
+                      return "WashU ID must be 6 digits long";
+                    }
+                    return null;
+                  },
                 ),
                 const SizedBox(height: 24),
                 StyledButton(
-                  onPressed: () async {},
+                  onPressed: () async {
+                    if(!_formKey.currentState!.validate()) return;
+                    final email = _emailController.text.trim();
+                    final password = _passwordController.text.trim();
+                    final washuID = _washuIDController.text.trim();
+
+                  },
                   child: const StyledButtonText('Sign up'),
                 ),
                 const SizedBox(height: 16),
