@@ -59,6 +59,8 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
+  String? _errorFeedback;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -108,14 +110,25 @@ class _LoginPageState extends State<LoginPage> {
                   },
                 ),
                 const SizedBox(height: 24),
+                if (_errorFeedback != null)
+                  Text(_errorFeedback!,
+                      style: const TextStyle(color: Colors.red)),
                 StyledButton(
                   onPressed: () async {
+                    setState(() {
+                      _errorFeedback = null;
+                    });
                     if (!_formKey.currentState!.validate()) return;
                     final email = _emailController.text.trim();
                     final password = _passwordController.text.trim();
                     final user = await AuthService.signIn(email, password);
 
                     //error feedback
+                    if (user == null) {
+                      setState(() {
+                        _errorFeedback = 'Invalid login credentials';
+                      });
+                    }
                   },
                   child: const StyledButtonText('Sign in'),
                 ),

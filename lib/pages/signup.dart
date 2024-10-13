@@ -18,6 +18,8 @@ class _SignupFormState extends State<SignupForm> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _washuIDController = TextEditingController();
 
+  String? _errorFeedback;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -85,9 +87,15 @@ class _SignupFormState extends State<SignupForm> {
                   },
                 ),
                 const SizedBox(height: 24),
+                if (_errorFeedback != null)
+                  Text(_errorFeedback!,
+                      style: const TextStyle(color: Colors.red)),
                 StyledButton(
                   onPressed: () async {
                     if (!_formKey.currentState!.validate()) return;
+                    setState(() {
+                      _errorFeedback = null;
+                    });
                     final email = _emailController.text.trim();
                     final password = _passwordController.text.trim();
                     final washuID = _washuIDController.text.trim();
@@ -95,7 +103,12 @@ class _SignupFormState extends State<SignupForm> {
                     final user =
                         await AuthService.signUp(email, password, washuID);
                     //error feedback
-                    
+                    if (user == null) {
+                      setState(() {
+                        _errorFeedback =
+                            'Could not sign up with those details.';
+                      });
+                    }
                   },
                   child: const StyledButtonText('Sign up'),
                 ),
