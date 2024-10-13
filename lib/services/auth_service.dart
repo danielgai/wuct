@@ -78,6 +78,11 @@ class AuthService {
       }
       return null;
     } on FirebaseAuthException catch (e) {
+      //overriding this message since its confusing for users
+      if (e.message ==
+          "The supplied auth credential is malformed or has expired.") {
+            return Future.error('Invalid login credentials');
+          }
       return Future.error(e.message ?? 'An unknown error occurred.');
     } catch (e) {
       return Future.error(e.toString());
