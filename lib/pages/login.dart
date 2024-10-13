@@ -40,9 +40,12 @@
 //   }
 // }
 
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:wuct/services/auth_service.dart';
+import 'package:wuct/shared/custom_snack_bar.dart';
 import 'package:wuct/shared/styled_button.dart';
 import 'package:wuct/shared/styled_text.dart';
 
@@ -55,10 +58,8 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-
   String? _errorFeedback;
 
   @override
@@ -121,13 +122,24 @@ class _LoginPageState extends State<LoginPage> {
                     if (!_formKey.currentState!.validate()) return;
                     final email = _emailController.text.trim();
                     final password = _passwordController.text.trim();
+
+                    // Attempt login
                     final user = await AuthService.signIn(email, password);
 
-                    //error feedback
+                    // Error feedback
                     if (user == null) {
                       setState(() {
                         _errorFeedback = 'Invalid login credentials';
                       });
+                    } else {
+                      // Show the Snackbar for success
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        CustomSnackBar(label: 'Login Successful')
+                      );
+                      // After Snackbar, redirect to home page
+                      if (mounted) {
+                        Navigator.pop(context);
+                      }
                     }
                   },
                   child: const StyledButtonText('Sign in'),
@@ -139,7 +151,7 @@ class _LoginPageState extends State<LoginPage> {
                       Navigator.pushReplacementNamed(context, '/signup');
                     },
                     child:
-                        Text('Sign up instead', style: GoogleFonts.poppins()))
+                        Text('Sign up instead', style: GoogleFonts.poppins())),
               ],
             ),
           ),

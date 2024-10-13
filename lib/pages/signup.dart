@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:wuct/services/auth_service.dart';
+import 'package:wuct/shared/custom_snack_bar.dart';
 import 'package:wuct/shared/styled_button.dart';
 import 'package:wuct/shared/styled_text.dart';
 
@@ -108,6 +109,12 @@ class _SignupFormState extends State<SignupForm> {
                         _errorFeedback =
                             'Could not sign up with those details.';
                       });
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          CustomSnackBar(label: 'Signup Successful'));
+                      if (mounted) {
+                        Navigator.pop(context, '/home');
+                      }
                     }
                   },
                   child: const StyledButtonText('Sign up'),
