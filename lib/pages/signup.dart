@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:wuct/services/auth_service.dart';
 import 'package:wuct/shared/styled_button.dart';
 import 'package:wuct/shared/styled_text.dart';
 
@@ -86,11 +87,15 @@ class _SignupFormState extends State<SignupForm> {
                 const SizedBox(height: 24),
                 StyledButton(
                   onPressed: () async {
-                    if(!_formKey.currentState!.validate()) return;
+                    if (!_formKey.currentState!.validate()) return;
                     final email = _emailController.text.trim();
                     final password = _passwordController.text.trim();
                     final washuID = _washuIDController.text.trim();
 
+                    final user =
+                        await AuthService.signup(email, password, washuID);
+                    //error feedback
+                    
                   },
                   child: const StyledButtonText('Sign up'),
                 ),
