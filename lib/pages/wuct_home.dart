@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wuct/services/auth_service.dart';
 import 'package:wuct/shared/home_button.dart';
 
 class WUCTHome extends StatefulWidget {
@@ -70,6 +71,9 @@ class _WUCTHomeState extends State<WUCTHome> {
         // Define your social action here
       },
     ),
+    ButtonData(label: 'Logout', icon: Icons.logout, onPressed: (context) {
+      AuthService.signOut();
+    })
   ];
 
   @override
