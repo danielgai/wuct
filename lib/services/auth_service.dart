@@ -15,6 +15,14 @@ class AuthService {
       //singup on firebase cloud database
       final User? user = credential.user;
       if (user != null) {
+        final washuIDExists = await _ref
+            .collection('users')
+            .where('washuID', isEqualTo: washuID)
+            .get();
+
+        if (washuIDExists.docs.isNotEmpty) {
+          return Future.error('WashU ID already exists.');
+        }
         await _ref.collection('users').doc(user.uid).set({
           'email': user.email,
           'washuID': washuID,
@@ -27,9 +35,10 @@ class AuthService {
             isAdmin: isAdmin);
       }
       return null;
+    } on FirebaseAuthException catch (e) {
+      return Future.error(e.message ?? 'An unknown error occurred.');
     } catch (e) {
-      print(e);
-      return null;
+      return Future.error(e.toString());
     }
   }
 
@@ -37,8 +46,7 @@ class AuthService {
     try {
       await _firebaseAuth.signOut();
     } catch (e) {
-      print(e);
-      return null;
+      return;
     }
   }
 
@@ -69,9 +77,10 @@ class AuthService {
         }
       }
       return null;
+    } on FirebaseAuthException catch (e) {
+      return Future.error(e.message ?? 'An unknown error occurred.');
     } catch (e) {
-      print(e);
-      return null;
+      return Future.error(e.toString());
     }
   }
 }

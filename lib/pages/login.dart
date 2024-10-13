@@ -122,25 +122,29 @@ class _LoginPageState extends State<LoginPage> {
                     if (!_formKey.currentState!.validate()) return;
                     final email = _emailController.text.trim();
                     final password = _passwordController.text.trim();
+                    try {
+                      final user = await AuthService.signIn(email, password);
 
-                    // Attempt login
-                    final user = await AuthService.signIn(email, password);
-
-                    // Error feedback
-                    if (user == null) {
-                      setState(() {
-                        _errorFeedback = 'Invalid login credentials';
-                      });
-                    } else {
-                      // Show the Snackbar for success
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        CustomSnackBar(label: 'Login Successful')
-                      );
-                      // After Snackbar, redirect to home page
-                      if (mounted) {
-                        Navigator.pop(context);
+                      // Error feedback
+                      // if (user == null) {
+                      //   setState(() {
+                      //     _errorFeedback = 'Invalid login credentials';
+                      //   });
+                      if (user != null) {
+                        // Show the Snackbar for success
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            CustomSnackBar(label: 'Login Successful'));
+                        // After Snackbar, redirect to home page
+                        if (mounted) {
+                          Navigator.pop(context);
+                        }
                       }
+                    } catch (e) {
+                      setState(() {
+                        _errorFeedback = e.toString();
+                      });
                     }
+                    // Attempt login
                   },
                   child: const StyledButtonText('Sign in'),
                 ),

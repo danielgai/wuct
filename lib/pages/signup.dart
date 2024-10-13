@@ -101,20 +101,27 @@ class _SignupFormState extends State<SignupForm> {
                     final password = _passwordController.text.trim();
                     final washuID = _washuIDController.text.trim();
 
-                    final user =
-                        await AuthService.signUp(email, password, washuID);
-                    //error feedback
-                    if (user == null) {
-                      setState(() {
-                        _errorFeedback =
-                            'Could not sign up with those details.';
-                      });
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          CustomSnackBar(label: 'Signup Successful'));
-                      if (mounted) {
-                        Navigator.pop(context, '/home');
+                    try {
+                      final user =
+                          await AuthService.signUp(email, password, washuID);
+                      //error feedback
+                      // if (user == null) {
+                      //   setState(() {
+                      //     _errorFeedback =
+                      //         'Could not sign up with those details.';
+                      //   });
+                      // }
+                      if (user != null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            CustomSnackBar(label: 'Signup Successful'));
+                        if (mounted) {
+                          Navigator.pop(context, '/home');
+                        }
                       }
+                    } catch (e) {
+                      setState(() {
+                        _errorFeedback = e.toString();
+                      });
                     }
                   },
                   child: const StyledButtonText('Sign up'),
