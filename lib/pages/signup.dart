@@ -93,7 +93,7 @@ class _SignupFormState extends State<SignupForm> {
                     final washuID = _washuIDController.text.trim();
 
                     final user =
-                        await AuthService.signup(email, password, washuID);
+                        await AuthService.signUp(email, password, washuID);
                     //error feedback
                     
                   },

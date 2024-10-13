@@ -5,7 +5,8 @@ import 'package:wuct/models/app_user.dart';
 class AuthService {
   static final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   static final FirebaseFirestore _ref = FirebaseFirestore.instance;
-  static Future<AppUser?> signup(String email, String password, String washuID,
+
+  static Future<AppUser?> signUp(String email, String password, String washuID,
       {bool isAdmin = false}) async {
     try {
       //signup on firebase auth
@@ -35,6 +36,39 @@ class AuthService {
   static Future<void> signOut() async {
     try {
       await _firebaseAuth.signOut();
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
+
+//sign users in
+  static Future<AppUser?> signIn(String email, String password) async {
+    try {
+      //signin on firebase auth
+      final UserCredential credential = await _firebaseAuth
+          .signInWithEmailAndPassword(email: email, password: password);
+      final User? user = credential.user;
+
+      if (user != null) {
+        final DocumentSnapshot<Map<String, dynamic>> userDoc =
+            await _ref.collection('users').doc(user.uid).get();
+
+        if (userDoc.exists) {
+          final data = userDoc.data();
+          if (data != null) {
+            // Return AppUser with the retrieved data
+            return AppUser(
+              uid: user.uid,
+              email: data['email'] ?? '', // Email from Firestore data
+              washuID: data['washuID'] ?? '', // WashU ID from Firestore data
+              isAdmin:
+                  data['admin'] ?? false, // Admin status from Firestore data
+            );
+          }
+        }
+      }
+      return null;
     } catch (e) {
       print(e);
       return null;

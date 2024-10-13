@@ -71,8 +71,8 @@ class _WUCTHomeState extends State<WUCTHome> {
         // Define your social action here
       },
     ),
-    ButtonData(label: 'Logout', icon: Icons.logout, onPressed: (context) {
-      AuthService.signOut();
+    ButtonData(label: 'Logout', icon: Icons.logout, onPressed: (context) async {
+      await AuthService.signOut();
     })
   ];
 
