@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:wuct/models/app_user.dart';
+import 'package:wuct/providers/auth_provider.dart';
 
 class AuthService {
   static final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
@@ -42,13 +44,24 @@ class AuthService {
     }
   }
 
-  static Future<void> signOut() async {
-    try {
-      await _firebaseAuth.signOut();
-    } catch (e) {
-      return;
-    }
+  // static Future<void> signOut() async {
+  //   try {
+  //     await _firebaseAuth.signOut();
+  //   } catch (e) {
+  //     return;
+  //   }
+  // }
+
+  static Future<void> signOut(WidgetRef ref) async {
+  try {
+    await _firebaseAuth.signOut();
+    // Invalidate the authProvider to refresh the UI
+    ref.invalidate(authProvider);
+  } catch (e) {
+    return;
   }
+}
+
 
 //sign users in
   static Future<AppUser?> signIn(String email, String password) async {
@@ -81,8 +94,8 @@ class AuthService {
       //overriding this message since its confusing for users
       if (e.message ==
           "The supplied auth credential is malformed or has expired.") {
-            return Future.error('Invalid login credentials');
-          }
+        return Future.error('Invalid login credentials');
+      }
       return Future.error(e.message ?? 'An unknown error occurred.');
     } catch (e) {
       return Future.error(e.toString());
