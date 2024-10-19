@@ -7,7 +7,7 @@ import 'package:wuct/providers/auth_provider.dart';
 class AuthService {
   static final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   static final FirebaseFirestore _ref = FirebaseFirestore.instance;
-
+  // static final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   static Future<AppUser?> signUp(String email, String password, String washuID,
       {bool isAdmin = false}) async {
     try {

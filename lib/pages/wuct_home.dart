@@ -53,6 +53,7 @@ class WUCTHome extends ConsumerWidget {
               icon: Icons.notifications,
               onPressed: (context) {
                 // Define your notifications action here
+                Navigator.of(context).pushNamed('/notifications');
               },
             ),
           ButtonData(
