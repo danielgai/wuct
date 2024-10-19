@@ -8,7 +8,6 @@ import 'package:wuct/pages/signup.dart';
 import 'package:wuct/pages/web_view_container.dart';
 import 'package:wuct/pages/wuct_home.dart';
 import 'package:wuct/providers/auth_provider.dart';
-import 'package:wuct/services/notification_service.dart';
 import 'package:wuct/services/screen_stack_observer.dart';
 
 import 'package:firebase_core/firebase_core.dart';
@@ -26,7 +25,7 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  await NotificationService().initNotifications();
+  // await NotificationService().initNotifications();
 
 //paste in BEFORE you run the app. Needs to get firebase ready before it starts
 //connect to app in firebase before the app actually starts
@@ -45,8 +44,9 @@ void main() async {
                   data: (user) {
                     return const WUCTHome();
                   },
-                  error: (error, _) =>
-                      const Text('Error loading auth status...'),
+                  error: (error, _) {
+                    return const Text('Error loading auth status...');
+                  },
                   loading: () => const Loading());
             }),
         // } WUCTHome(),

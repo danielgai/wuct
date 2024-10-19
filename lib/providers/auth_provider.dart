@@ -14,8 +14,11 @@ final authProvider = StreamProvider.autoDispose<AppUser?>((ref) {
           .map((doc) {
         if (doc.exists) {
           final data = doc.data()!;
-          final washuID = data['washuID'];
+          final washuID = data['washuID'] ?? '';
           final isAdmin = data['admin'] ?? false;
+          
+          // Safely cast the fcmTokens to List<String>
+          final List<String> fcmTokens = List<String>.from(data['fcmTokens'] ?? []);
 
           // Return an AppUser instance with additional data
           return AppUser(
@@ -23,6 +26,7 @@ final authProvider = StreamProvider.autoDispose<AppUser?>((ref) {
             email: user.email!,
             washuID: washuID,
             isAdmin: isAdmin,
+            fcmTokens: fcmTokens,  
           );
         } else {
           // Document doesn't exist yet
@@ -35,6 +39,7 @@ final authProvider = StreamProvider.autoDispose<AppUser?>((ref) {
     }
   });
 });
+
 
 /**
  * final authProvider = StreamProvider.autoDispose<AppUser?>((ref) async* {

@@ -5,10 +5,11 @@ class NotificationService {
   static final FirebaseMessaging _firebaseMessaging =
       FirebaseMessaging.instance;
 
-  Future<void> initNotifications() async {
+  Future<String?> initNotifications() async {
     await _firebaseMessaging.requestPermission();
     final fcmToken = await _firebaseMessaging.getToken();
     print(fcmToken);
+    return fcmToken;
   }
 
   void handleMessage(RemoteMessage? message) {
@@ -21,6 +22,5 @@ class NotificationService {
     FirebaseMessaging.instance.getInitialMessage().then(handleMessage);
     //attach event listeers for when a notification opens the app
     FirebaseMessaging.onMessageOpenedApp.listen(handleMessage);
-
   }
 }
