@@ -4,6 +4,7 @@ import 'package:wuct/models/app_user.dart';
 import 'package:wuct/pages/loading.dart';
 import 'package:wuct/pages/login.dart';
 import 'package:wuct/pages/notifications_page.dart';
+import 'package:wuct/pages/profile.dart';
 import 'package:wuct/pages/signup.dart';
 import 'package:wuct/pages/web_view_container.dart';
 import 'package:wuct/pages/wuct_home.dart';
@@ -54,7 +55,8 @@ void main() async {
         '/notifications': (context) => const NotificationsPage(),
         // '/campusMap': (context) => const CampusMap(),
         '/login': (context) => const LoginPage(),
-        '/signup': (context) => const SignupForm()
+        '/signup': (context) => const SignupForm(),
+        '/profile': (context) => const Profile(),
       },
       // home: WebViewApp(),
       //throws an error if you have both home property and / cause of redundancy

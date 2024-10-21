@@ -4,8 +4,15 @@ class AppUser {
       required this.email,
       required this.washuID,
       required this.isAdmin,
-      required this.fcmTokens});
+      required this.fcmTokens,
+      this.individualID = "",
+      this.teamID = "",
+      this.topicsID = "",
+      });
 
+  final String teamID;
+  final String topicsID;
+  final String individualID;
   final String uid;
   final String email;
   final String washuID;

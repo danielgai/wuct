@@ -45,6 +45,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:wuct/services/auth_service.dart';
+import 'package:wuct/shared/custom_app_bar.dart';
 import 'package:wuct/shared/custom_snack_bar.dart';
 import 'package:wuct/shared/styled_button.dart';
 import 'package:wuct/shared/styled_text.dart';
@@ -65,11 +66,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const StyledAppBarText('Login'),
-        backgroundColor: Colors.green[800],
-        centerTitle: true,
-      ),
+      appBar: CustomAppBar(label: 'Login'),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 48, horizontal: 16),

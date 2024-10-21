@@ -32,7 +32,10 @@ class AuthService {
           'email': user.email,
           'washuID': washuID,
           'admin': isAdmin,
-          'fcmTokens': [fcmToken]
+          'fcmTokens': [fcmToken],
+          'individualID': '',
+          'teamID': '',
+          'topicsID': '',
         });
         return AppUser(
             uid: user.uid,
