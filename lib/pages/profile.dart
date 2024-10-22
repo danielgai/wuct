@@ -48,7 +48,7 @@ class _ProfileState extends State<Profile> {
                     TextEditingController(text: user.individualID);
 
                 return Padding(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.fromLTRB(16, 40, 16, 16),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -75,11 +75,13 @@ class _ProfileState extends State<Profile> {
                         },
                         onSave: () async {
                           try {
-                            await AuthService.changeValue(
-                                user.uid, 'teamID', _teamIDController.text);
                             setState(() {
                               isEditingTeamID = false;
                             });
+                            if (user.teamID == _teamIDController.text) return;
+                            await AuthService.changeValue(
+                                user.uid, 'teamID', _teamIDController.text);
+
                             ScaffoldMessenger.of(context).showSnackBar(
                               CustomSnackBar(
                                   label: 'Team ID updated successfully'),
@@ -107,11 +109,14 @@ class _ProfileState extends State<Profile> {
                         },
                         onSave: () async {
                           try {
-                            await AuthService.changeValue(
-                                user.uid, 'topicsID', _topicsIDController.text);
                             setState(() {
                               isEditingTopicsID = false;
                             });
+                            if (user.topicsID == _topicsIDController.text)
+                              return;
+                            await AuthService.changeValue(
+                                user.uid, 'topicsID', _topicsIDController.text);
+
                             ScaffoldMessenger.of(context).showSnackBar(
                               CustomSnackBar(
                                   label: 'Topics ID updated successfully'),
@@ -139,11 +144,14 @@ class _ProfileState extends State<Profile> {
                         },
                         onSave: () async {
                           try {
-                            await AuthService.changeValue(user.uid,
-                                'individualID', _individualIDController.text);
                             setState(() {
                               isEditingIndividualID = false;
                             });
+                            if (user.individualID ==
+                                _individualIDController.text) return;
+                            await AuthService.changeValue(user.uid,
+                                'individualID', _individualIDController.text);
+
                             ScaffoldMessenger.of(context).showSnackBar(
                               CustomSnackBar(
                                   label: 'Individual ID updated successfully'),
@@ -156,6 +164,18 @@ class _ProfileState extends State<Profile> {
                           }
                         },
                       ),
+                      const SizedBox(height: 16),
+                      const Center(
+                          child: Column(
+                        children: [
+                          Text('Your schedule:', style: TextStyle(fontSize: 16)),
+                          SizedBox(height: 16),
+                          //placeholder image for now
+                          Image(
+                            image: AssetImage('assets/WUCT_Home.png'),
+                          ),
+                        ],
+                      ))
                     ],
                   ),
                 );
