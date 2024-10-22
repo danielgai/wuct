@@ -127,4 +127,16 @@ class AuthService {
       return Future.error(e.toString());
     }
   }
+
+  static Future<void> changeValue(String userId, String fieldName, dynamic newValue) async {
+  try {
+    // Update the specific field of the user's document
+    await _ref.collection('users').doc(userId).update({
+      fieldName: newValue,
+    });
+  } catch (e) {
+    return Future.error('Failed to update user data: ${e.toString()}');
+  }
+}
+
 }

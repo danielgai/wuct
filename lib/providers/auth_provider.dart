@@ -16,18 +16,21 @@ final authProvider = StreamProvider.autoDispose<AppUser?>((ref) {
           final data = doc.data()!;
           final washuID = data['washuID'] ?? '';
           final isAdmin = data['admin'] ?? false;
-          
+
           // Safely cast the fcmTokens to List<String>
-          final List<String> fcmTokens = List<String>.from(data['fcmTokens'] ?? []);
+          final List<String> fcmTokens =
+              List<String>.from(data['fcmTokens'] ?? []);
 
           // Return an AppUser instance with additional data
           return AppUser(
-            uid: user.uid,
-            email: user.email!,
-            washuID: washuID,
-            isAdmin: isAdmin,
-            fcmTokens: fcmTokens,  
-          );
+              uid: user.uid,
+              email: user.email!,
+              washuID: washuID,
+              isAdmin: isAdmin,
+              fcmTokens: fcmTokens,
+              individualID: data['individualID'] ?? '',
+              teamID: data['teamID'] ?? '',
+              topicsID: data['topicsID'] ?? '');
         } else {
           // Document doesn't exist yet
           return null;
