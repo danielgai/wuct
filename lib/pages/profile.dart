@@ -112,8 +112,9 @@ class _ProfileState extends State<Profile> {
                             setState(() {
                               isEditingTopicsID = false;
                             });
-                            if (user.topicsID == _topicsIDController.text)
+                            if (user.topicsID == _topicsIDController.text) {
                               return;
+                            }
                             await AuthService.changeValue(
                                 user.uid, 'topicsID', _topicsIDController.text);
 
