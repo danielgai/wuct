@@ -5,12 +5,16 @@
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
+<!--        android:name="wuct"-->
     <application
         android:label="wuct"
-        android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon"
         android:usesCleartextTraffic="true"> <!-- Allows HTTP traffic if needed -->
 
+    <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="${GOOGLE_MAPS_API_KEY}"/>
+    
         <activity
             android:name=".MainActivity"
             android:exported="true"

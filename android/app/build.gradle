@@ -6,11 +6,22 @@ plugins {
     id "kotlin-android"
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id "dev.flutter.flutter-gradle-plugin"
+    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
 }
+
+def secretPropsFile = file("${rootDir}/secrets.properties")
+
+def secretProps = new Properties()
+if (secretPropsFile.exists()) {
+    secretProps.load(new FileInputStream(secretPropsFile))
+} else {
+    throw new FileNotFoundException("Missing 'secrets.properties' file. Please create it in the root directory.")
+}
+
 
 android {
     namespace = "com.example.wuct_mobile_app"
-    compileSdk = flutter.compileSdkVersion
+    compileSdk = 34
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
@@ -27,10 +38,12 @@ android {
         applicationId "com.example.wuct"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = flutter.minSdkVersion
-        targetSdk = flutter.targetSdkVersion
-        versionCode = flutter.versionCode
-        versionName = flutter.versionName
+        //may need to add equal signs to the last 3 lines of code in this default config portion if runing android gives errors
+        minSdk 23
+        targetSdk 34
+        versionCode flutter.versionCode
+        versionName flutter.versionName
+        manifestPlaceholders = [GOOGLE_MAPS_API_KEY: secretProps['GOOGLE_MAPS_API_KEY']]
     }
 
     buildTypes {
@@ -44,4 +57,12 @@ android {
 
 flutter {
     source = "../.."
+}
+
+secrets {
+    propertiesFileName = "secrets.properties"
+    defaultPropertiesFileName = "local.defaults.properties"
+
+    ignoreList.add("sdk.dir")
+    ignoreList.add("keyToIgnore")
 }
