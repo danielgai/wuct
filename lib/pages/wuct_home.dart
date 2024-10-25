@@ -44,6 +44,8 @@ class WUCTHome extends ConsumerWidget {
               label: 'Find Room',
               icon: Icons.directions,
               onPressed: (context) {
+                Navigator.of(context).pushNamed('/map');
+
                 // Define your find room action here
               },
             ),

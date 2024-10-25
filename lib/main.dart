@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:wuct/models/app_user.dart';
 import 'package:wuct/pages/loading.dart';
 import 'package:wuct/pages/login.dart';
+import 'package:wuct/pages/map_page.dart';
 import 'package:wuct/pages/notifications_page.dart';
 import 'package:wuct/pages/profile.dart';
 import 'package:wuct/pages/signup.dart';
@@ -21,6 +24,12 @@ void main() async {
 //which it needs to do to initialize itself. w/o it, Firebase may
   //not work correctly in app
   WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: "lib/.env");
+  const platform = MethodChannel('com.wuct/api');
+  final apiKey = dotenv.env['GOOGLE_MAPS_API_KEY_IOS'];
+  if (apiKey != null) {
+    await platform.invokeMethod('setApiKey', apiKey);
+  }
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -57,6 +66,7 @@ void main() async {
         '/login': (context) => const LoginPage(),
         '/signup': (context) => const SignupForm(),
         '/profile': (context) => const Profile(),
+        '/map': (context) => MapPage(),
       },
       // home: WebViewApp(),
       //throws an error if you have both home property and / cause of redundancy
