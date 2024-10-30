@@ -66,7 +66,7 @@ void main() async {
         '/login': (context) => const LoginPage(),
         '/signup': (context) => const SignupForm(),
         '/profile': (context) => const Profile(),
-        '/map': (context) => MapPage(),
+        '/map': (context) => const MapPage(),
       },
       // home: WebViewApp(),
       //throws an error if you have both home property and / cause of redundancy
