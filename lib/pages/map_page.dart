@@ -14,7 +14,7 @@ class MapPage extends StatefulWidget {
 
 class _MapPageState extends State<MapPage> {
   GoogleMapController? mapController;
-  LatLng _defaultPosition = const LatLng(-33.86, 151.20); // Default location to load the map
+  final LatLng _defaultPosition = const LatLng(-33.86, 151.20); // Default location to load the map
   LatLng? _currentPosition;
   bool isLoading = false;
 

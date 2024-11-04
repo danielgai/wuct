@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class AppUser {
   AppUser(
       {required this.uid,
@@ -8,6 +10,7 @@ class AppUser {
       this.individualID = "",
       this.teamID = "",
       this.topicsID = "",
+      this.notifications = const [],
       });
 
   final String teamID;
@@ -18,4 +21,5 @@ class AppUser {
   final String washuID;
   final bool isAdmin;
   final List<String> fcmTokens;
+  final List<Notification> notifications;
 }

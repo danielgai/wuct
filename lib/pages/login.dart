@@ -41,7 +41,6 @@
 // }
 
 // ignore_for_file: use_build_context_synchronously
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:wuct/services/auth_service.dart';
@@ -62,6 +61,30 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   String? _errorFeedback;
+
+  Future<void> _signIn() async {
+    setState(() {
+      _errorFeedback = null;
+    });
+    if (!_formKey.currentState!.validate()) return;
+    final email = _emailController.text.trim();
+    final password = _passwordController.text.trim();
+    try {
+      final user = await AuthService.signIn(email, password);
+      if (user != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          CustomSnackBar(label: 'Login Successful'),
+        );
+        if (mounted) {
+          Navigator.pop(context);
+        }
+      }
+    } catch (e) {
+      setState(() {
+        _errorFeedback = e.toString();
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -106,53 +129,27 @@ class _LoginPageState extends State<LoginPage> {
                     }
                     return null;
                   },
+                  textInputAction:
+                      TextInputAction.done, // Allows "Enter" to submit
+                  onFieldSubmitted: (_) =>
+                      _signIn(), // Trigger sign-in on "Enter"
                 ),
                 const SizedBox(height: 24),
                 if (_errorFeedback != null)
                   Text(_errorFeedback!,
                       style: const TextStyle(color: Colors.red)),
                 StyledButton(
-                  onPressed: () async {
-                    setState(() {
-                      _errorFeedback = null;
-                    });
-                    if (!_formKey.currentState!.validate()) return;
-                    final email = _emailController.text.trim();
-                    final password = _passwordController.text.trim();
-                    try {
-                      final user = await AuthService.signIn(email, password);
-
-                      // Error feedback
-                      // if (user == null) {
-                      //   setState(() {
-                      //     _errorFeedback = 'Invalid login credentials';
-                      //   });
-                      if (user != null) {
-                        // Show the Snackbar for success
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            CustomSnackBar(label: 'Login Successful'));
-                        // After Snackbar, redirect to home page
-                        if (mounted) {
-                          Navigator.pop(context);
-                        }
-                      }
-                    } catch (e) {
-                      setState(() {
-                        _errorFeedback = e.toString();
-                      });
-                    }
-                    // Attempt login
-                  },
+                  onPressed: _signIn,
                   child: const StyledButtonText('Sign in'),
                 ),
                 const SizedBox(height: 16),
                 const Center(child: StyledBodyText('Need an account?')),
                 TextButton(
-                    onPressed: () {
-                      Navigator.pushReplacementNamed(context, '/signup');
-                    },
-                    child:
-                        Text('Sign up instead', style: GoogleFonts.poppins())),
+                  onPressed: () {
+                    Navigator.pushReplacementNamed(context, '/signup');
+                  },
+                  child: Text('Sign up instead', style: GoogleFonts.poppins()),
+                ),
               ],
             ),
           ),

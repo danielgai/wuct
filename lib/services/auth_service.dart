@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:wuct/models/app_user.dart';
 import 'package:wuct/providers/auth_provider.dart';
@@ -36,6 +37,7 @@ class AuthService {
           'individualID': '',
           'teamID': '',
           'topicsID': '',
+          'notifications': [],
         });
         return AppUser(
             uid: user.uid,
@@ -92,6 +94,8 @@ class AuthService {
 
             // Retrieve the existing FCM tokens from Firestore
             List<String> fcmTokens = List<String>.from(data['fcmTokens'] ?? []);
+            List<Notification> notifications =
+                List<Notification>.from(data['notifications'] ?? []);
 
             // If the new FCM token is not in the list, add it to Firestore
             if (fcmToken != null && !fcmTokens.contains(fcmToken)) {
@@ -110,8 +114,8 @@ class AuthService {
                 washuID: data['washuID'] ?? '', // WashU ID from Firestore data
                 isAdmin:
                     data['admin'] ?? false, // Admin status from Firestore data
-                fcmTokens:
-                    fcmTokens); // Updated FCM tokens list including the new token
+                fcmTokens: fcmTokens,
+                notifications: notifications);
           }
         }
       }
@@ -128,15 +132,15 @@ class AuthService {
     }
   }
 
-  static Future<void> changeValue(String userId, String fieldName, dynamic newValue) async {
-  try {
-    // Update the specific field of the user's document
-    await _ref.collection('users').doc(userId).update({
-      fieldName: newValue,
-    });
-  } catch (e) {
-    return Future.error('Failed to update user data: ${e.toString()}');
+  static Future<void> changeValue(
+      String userId, String fieldName, dynamic newValue) async {
+    try {
+      // Update the specific field of the user's document
+      await _ref.collection('users').doc(userId).update({
+        fieldName: newValue,
+      });
+    } catch (e) {
+      return Future.error('Failed to update user data: ${e.toString()}');
+    }
   }
-}
-
 }

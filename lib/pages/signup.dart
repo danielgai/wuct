@@ -22,6 +22,32 @@ class _SignupFormState extends State<SignupForm> {
 
   String? _errorFeedback;
 
+  Future<void> _signUp() async {
+    if (!_formKey.currentState!.validate()) return;
+    setState(() {
+      _errorFeedback = null;
+    });
+    final email = _emailController.text.trim();
+    final password = _passwordController.text.trim();
+    final washuID = _washuIDController.text.trim();
+
+    try {
+      final user = await AuthService.signUp(email, password, washuID);
+      if (user != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          CustomSnackBar(label: 'Signup Successful'),
+        );
+        if (mounted) {
+          Navigator.pop(context, '/home');
+        }
+      }
+    } catch (e) {
+      setState(() {
+        _errorFeedback = e.toString();
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -83,54 +109,26 @@ class _SignupFormState extends State<SignupForm> {
                     }
                     return null;
                   },
+                  textInputAction: TextInputAction.done, // Enable "done" button
+                  onFieldSubmitted: (_) =>
+                      _signUp(), // Trigger sign-up on Enter
                 ),
                 const SizedBox(height: 24),
                 if (_errorFeedback != null)
                   Text(_errorFeedback!,
                       style: const TextStyle(color: Colors.red)),
                 StyledButton(
-                  onPressed: () async {
-                    if (!_formKey.currentState!.validate()) return;
-                    setState(() {
-                      _errorFeedback = null;
-                    });
-                    final email = _emailController.text.trim();
-                    final password = _passwordController.text.trim();
-                    final washuID = _washuIDController.text.trim();
-
-                    try {
-                      final user =
-                          await AuthService.signUp(email, password, washuID);
-                      //error feedback
-                      // if (user == null) {
-                      //   setState(() {
-                      //     _errorFeedback =
-                      //         'Could not sign up with those details.';
-                      //   });
-                      // }
-                      if (user != null) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            CustomSnackBar(label: 'Signup Successful'));
-                        if (mounted) {
-                          Navigator.pop(context, '/home');
-                        }
-                      }
-                    } catch (e) {
-                      setState(() {
-                        _errorFeedback = e.toString();
-                      });
-                    }
-                  },
+                  onPressed: _signUp,
                   child: const StyledButtonText('Sign up'),
                 ),
                 const SizedBox(height: 16),
                 const Center(child: StyledBodyText('Already have an account?')),
                 TextButton(
-                    onPressed: () {
-                      Navigator.pushReplacementNamed(context, '/login');
-                    },
-                    child:
-                        Text('Sign in instead', style: GoogleFonts.poppins()))
+                  onPressed: () {
+                    Navigator.pushReplacementNamed(context, '/login');
+                  },
+                  child: Text('Sign in instead', style: GoogleFonts.poppins()),
+                ),
               ],
             ),
           ),

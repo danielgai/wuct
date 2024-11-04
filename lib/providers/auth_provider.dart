@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:wuct/models/app_user.dart';
 
@@ -21,6 +22,9 @@ final authProvider = StreamProvider.autoDispose<AppUser?>((ref) {
           final List<String> fcmTokens =
               List<String>.from(data['fcmTokens'] ?? []);
 
+          final List<Notification> notifications =
+              List<Notification>.from(data['notifications'] ?? []);
+
           // Return an AppUser instance with additional data
           return AppUser(
               uid: user.uid,
@@ -30,7 +34,8 @@ final authProvider = StreamProvider.autoDispose<AppUser?>((ref) {
               fcmTokens: fcmTokens,
               individualID: data['individualID'] ?? '',
               teamID: data['teamID'] ?? '',
-              topicsID: data['topicsID'] ?? '');
+              topicsID: data['topicsID'] ?? '',
+              notifications: notifications);
         } else {
           // Document doesn't exist yet
           return null;
