@@ -46,6 +46,7 @@ class _NotificationsPageState extends ConsumerState<NotificationsPage> {
                 // Text(message.data.toString())
               ],
             );
+            return null;
           },
           loading: () => const Center(child: Loading()),
           error: (error, stackTrace) =>

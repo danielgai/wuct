@@ -7,7 +7,7 @@ import 'package:wuct/shared/custom_app_bar.dart';
 import 'package:wuct/shared/custom_snack_bar.dart'; // Import CustomSnackBar
 
 class Profile extends ConsumerStatefulWidget {
-  const Profile({Key? key}) : super(key: key);
+  const Profile({super.key});
 
   @override
   _ProfileState createState() => _ProfileState();
@@ -142,8 +142,9 @@ class _ProfileState extends ConsumerState<Profile> {
                           setState(() {
                             isEditingIndividualID = false;
                           });
-                          if (user.individualID == _individualIDController.text)
+                          if (user.individualID == _individualIDController.text) {
                             return;
+                          }
                           await AuthService.changeValue(user.uid, 'individualID',
                               _individualIDController.text);
                 
