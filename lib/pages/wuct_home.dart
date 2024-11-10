@@ -84,7 +84,12 @@ class WUCTHome extends ConsumerWidget {
           ),
           // Conditionally render "Send Announcement" button if the user is admin
           if (user != null && user.isAdmin)
-            ButtonData(label: 'Send Announcement', icon: Icons.send),
+            ButtonData(
+                label: 'Send Announcement',
+                icon: Icons.send,
+                onPressed: (context) {
+                  Navigator.of(context).pushNamed('/sendAnnouncement');
+                }),
           if (user != null)
             ButtonData(
                 label: 'Profile',

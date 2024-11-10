@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:wuct/models/app_user.dart';
+import 'package:wuct/pages/announcements_page.dart';
 import 'package:wuct/pages/loading.dart';
 import 'package:wuct/pages/login.dart';
 import 'package:wuct/pages/map_page.dart';
@@ -67,6 +68,7 @@ void main() async {
         '/signup': (context) => const SignupForm(),
         '/profile': (context) => const Profile(),
         '/map': (context) => const MapPage(),
+        '/sendAnnouncement': (context) => const AnnouncementsPage(),
       },
       // home: WebViewApp(),
       //throws an error if you have both home property and / cause of redundancy

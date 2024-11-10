@@ -73,5 +73,5 @@ exports.sendAnnouncementNotification = functions.https.onRequest(
       console.error('Error sending notifications:', error);
       return res.status(500).send('Error sending notifications.');
     }
-  }
+  },
 );

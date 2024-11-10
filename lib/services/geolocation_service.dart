@@ -29,10 +29,17 @@ class GeolocationService {
       return null;
     }
 
+    LocationSettings locationSettings = const LocationSettings(
+      accuracy: LocationAccuracy.high, // Adjust accuracy here as needed
+      distanceFilter: 10, // Update location every 10 meters
+    );
     // When permissions are granted, get the current position
     try {
+      // Position position = await Geolocator.getCurrentPosition(
+      //     desiredAccuracy: LocationAccuracy.high);
       Position position = await Geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.high);
+        locationSettings: locationSettings,
+      );
       return position;
     } catch (e) {
       print('Error fetching location: $e');

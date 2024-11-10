@@ -96,6 +96,8 @@ class _MapPageState extends State<MapPage> {
                     )
                   }
                 : {},
+              myLocationButtonEnabled: false,
+              myLocationEnabled: true,
           ),
           if (isLoading)
             const Center(
