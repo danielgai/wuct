@@ -1,9 +1,21 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:wuct/pages/loading.dart';
 import 'package:wuct/services/geolocation_service.dart';
 import 'package:wuct/shared/custom_app_bar.dart';
+import 'dart:ui' as ui;
+
+class LatLngTween extends Tween<LatLng> {
+  LatLngTween({LatLng? begin, LatLng? end}) : super(begin: begin, end: end);
+
+  @override
+  LatLng lerp(double t) => LatLng(
+        ui.lerpDouble(begin!.latitude, end!.latitude, t)!,
+        ui.lerpDouble(begin!.longitude, end!.longitude, t)!,
+      );
+}
 
 class MapPage extends StatefulWidget {
   const MapPage({super.key});
@@ -12,71 +24,99 @@ class MapPage extends StatefulWidget {
   State<MapPage> createState() => _MapPageState();
 }
 
-class _MapPageState extends State<MapPage> {
+class _MapPageState extends State<MapPage> with SingleTickerProviderStateMixin {
   GoogleMapController? mapController;
-  final LatLng _defaultPosition = const LatLng(-33.86, 151.20); // Default location to load the map
+  final LatLng _defaultPosition = const LatLng(-33.86, 151.20);
   LatLng? _currentPosition;
   bool isLoading = false;
+  bool _isFirstLocation = true;
+
+  static const double _smoothZoom = 17.0;
+
+  late StreamSubscription<Position> _positionStreamSubscription;
+  late AnimationController _animationController;
+  Animation<LatLng>? _animation;
 
   @override
   void initState() {
     super.initState();
-    _fetchLocation(); // Start fetching the location after map load
-    print('initState: Starting location fetch');
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1000),
+    );
+    _startLocationUpdates();
   }
 
-  Future<void> _fetchLocation() async {
-    setState(() {
-      isLoading = true;
-    });
-    print('_fetchLocation: Fetching location...');
-    
-    try {
-      Position? position = await GeolocationService().getCurrentPosition();
-      if (position != null) {
-        _currentPosition = LatLng(position.latitude, position.longitude);
-        print('_fetchLocation: Current position fetched: $_currentPosition');
+  @override
+  void dispose() {
+    _animationController.dispose();
+    _positionStreamSubscription.cancel();
+    mapController?.dispose();
+    super.dispose();
+  }
 
-        // Move the camera to the user's current location if mapController is initialized
+  void _startLocationUpdates() {
+    _positionStreamSubscription =
+        GeolocationService().getPositionStream().listen((Position position) {
+      final newPosition = LatLng(position.latitude, position.longitude);
+
+      if (_currentPosition != null) {
+        _animateToPosition(_currentPosition!, newPosition);
+      } else {
+        _currentPosition = newPosition;
         if (mapController != null) {
-          print('_fetchLocation: mapController available, animating camera to $_currentPosition');
           mapController!.animateCamera(
-            CameraUpdate.newLatLngZoom(_currentPosition!, 15.0),
+            CameraUpdate.newLatLngZoom(newPosition, _smoothZoom),
           );
         }
-      } else {
-        print('_fetchLocation: Location is null, popping navigator');
-        Navigator.of(context).pop();
       }
-    } catch (e) {
-      print('Error in _fetchLocation: $e');
-    }
-
-    setState(() {
-      isLoading = false;
     });
-    print('_fetchLocation: Location fetch complete, isLoading set to false');
+  }
+
+  void _animateToPosition(LatLng from, LatLng to) {
+    double distance = Geolocator.distanceBetween(
+      from.latitude,
+      from.longitude,
+      to.latitude,
+      to.longitude,
+    );
+
+    // Set a minimum and maximum duration
+    int duration = (distance * 10).clamp(500, 2000).toInt();
+
+    _animationController.duration = Duration(milliseconds: duration);
+    _animationController.reset();
+
+    _animation = LatLngTween(begin: from, end: to).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
+    );
+
+    _animationController.forward();
+
+    _animation!.addListener(() {
+      mapController?.moveCamera(
+        CameraUpdate.newLatLng(_animation!.value),
+      );
+    });
+
+    _animationController.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        _currentPosition = to;
+      }
+    });
   }
 
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
-    print('_onMapCreated: Map controller initialized');
-
-    // Move the camera if location is fetched after map is created
     if (_currentPosition != null) {
-      print('_onMapCreated: Current position available, animating camera to $_currentPosition');
       mapController!.animateCamera(
-        CameraUpdate.newLatLngZoom(_currentPosition!, 15.0),
+        CameraUpdate.newLatLngZoom(_currentPosition!, _smoothZoom),
       );
-    } else {
-      print('_onMapCreated: No current position yet');
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    print('build: Current position: $_currentPosition');
-    
     return Scaffold(
       appBar: CustomAppBar(label: 'Maps'),
       body: Stack(
@@ -87,33 +127,21 @@ class _MapPageState extends State<MapPage> {
               target: _defaultPosition,
               zoom: 11.0,
             ),
-            markers: _currentPosition != null
-                ? {
-                    Marker(
-                      markerId: const MarkerId("current_location"),
-                      position: _currentPosition!,
-                      infoWindow: const InfoWindow(title: "You are here"),
-                    )
-                  }
-                : {},
-              myLocationButtonEnabled: false,
-              myLocationEnabled: true,
+            myLocationButtonEnabled: false,
+            myLocationEnabled: true,
           ),
           if (isLoading)
             const Center(
-              child: Loading(), // Show loading indicator while fetching location
+              child: Loading(),
             ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           if (_currentPosition != null && mapController != null) {
-            print('FloatingActionButton: Manually animating camera to $_currentPosition');
             await mapController!.animateCamera(
-              CameraUpdate.newLatLngZoom(_currentPosition!, 15.0),
+              CameraUpdate.newLatLngZoom(_currentPosition!, _smoothZoom),
             );
-          } else {
-            print('FloatingActionButton: mapController or currentPosition is null');
           }
         },
         child: const Icon(Icons.my_location),

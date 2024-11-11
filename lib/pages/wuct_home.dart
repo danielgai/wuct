@@ -153,8 +153,9 @@ class WUCTHome extends ConsumerWidget {
           backgroundColor: Colors.white,
         );
       },
-      error: (error, stackTrace) =>
-          const Center(child: Text('Error loading user data')),
+      error: (error, stackTrace) {
+        return const Center(child: Text('Error loading user data'));
+      },
       loading: () => const Center(child: Loading()),
     );
   }
