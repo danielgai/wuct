@@ -2,13 +2,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:wuct/pages/loading.dart';
-import 'package:wuct/services/geolocation_service.dart';
-import 'package:wuct/shared/custom_app_bar.dart';
 import 'dart:ui' as ui;
+import 'package:wuct/shared/custom_app_bar.dart';
 
 class LatLngTween extends Tween<LatLng> {
-  LatLngTween({LatLng? begin, LatLng? end}) : super(begin: begin, end: end);
+  LatLngTween({super.begin, super.end});
 
   @override
   LatLng lerp(double t) => LatLng(
@@ -24,95 +22,67 @@ class MapPage extends StatefulWidget {
   State<MapPage> createState() => _MapPageState();
 }
 
-class _MapPageState extends State<MapPage> with SingleTickerProviderStateMixin {
+class _MapPageState extends State<MapPage> {
   GoogleMapController? mapController;
   final LatLng _defaultPosition = const LatLng(-33.86, 151.20);
   LatLng? _currentPosition;
+  double _currentZoom = 17.0; // Default zoom level
+
   bool isLoading = false;
-  bool _isFirstLocation = true;
-
-  static const double _smoothZoom = 17.0;
-
-  late StreamSubscription<Position> _positionStreamSubscription;
-  late AnimationController _animationController;
-  Animation<LatLng>? _animation;
 
   @override
   void initState() {
     super.initState();
-    _animationController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 1000),
-    );
-    _startLocationUpdates();
+    _updateCurrentLocation();
   }
 
   @override
   void dispose() {
-    _animationController.dispose();
-    _positionStreamSubscription.cancel();
     mapController?.dispose();
     super.dispose();
   }
 
-  void _startLocationUpdates() {
-    _positionStreamSubscription =
-        GeolocationService().getPositionStream().listen((Position position) {
-      final newPosition = LatLng(position.latitude, position.longitude);
+  Future<void> _updateCurrentLocation() async {
+    setState(() {
+      isLoading = true;
+    });
 
-      if (_currentPosition != null) {
-        _animateToPosition(_currentPosition!, newPosition);
-      } else {
-        _currentPosition = newPosition;
+    try {
+      Position? position = await Geolocator.getCurrentPosition();
+      if (position != null) {
+        _currentPosition = LatLng(position.latitude, position.longitude);
+
         if (mapController != null) {
+          // Use the current zoom level to animate the camera
           mapController!.animateCamera(
-            CameraUpdate.newLatLngZoom(newPosition, _smoothZoom),
+            CameraUpdate.newLatLngZoom(_currentPosition!, _currentZoom),
           );
         }
+      } else {
+        Navigator.of(context).pop();
       }
-    });
-  }
-
-  void _animateToPosition(LatLng from, LatLng to) {
-    double distance = Geolocator.distanceBetween(
-      from.latitude,
-      from.longitude,
-      to.latitude,
-      to.longitude,
-    );
-
-    // Set a minimum and maximum duration
-    int duration = (distance * 10).clamp(500, 2000).toInt();
-
-    _animationController.duration = Duration(milliseconds: duration);
-    _animationController.reset();
-
-    _animation = LatLngTween(begin: from, end: to).animate(
-      CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
-    );
-
-    _animationController.forward();
-
-    _animation!.addListener(() {
-      mapController?.moveCamera(
-        CameraUpdate.newLatLng(_animation!.value),
-      );
-    });
-
-    _animationController.addStatusListener((status) {
-      if (status == AnimationStatus.completed) {
-        _currentPosition = to;
-      }
-    });
+    } catch (e) {
+      print(e);
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
 
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
+
     if (_currentPosition != null) {
       mapController!.animateCamera(
-        CameraUpdate.newLatLngZoom(_currentPosition!, _smoothZoom),
+        CameraUpdate.newLatLngZoom(_currentPosition!, _currentZoom),
       );
     }
+  }
+
+  // This function updates `_currentZoom` whenever the camera moves
+  void _onCameraMove(CameraPosition position) {
+    _currentZoom = position.zoom;
   }
 
   @override
@@ -123,27 +93,22 @@ class _MapPageState extends State<MapPage> with SingleTickerProviderStateMixin {
         children: [
           GoogleMap(
             onMapCreated: _onMapCreated,
+            onCameraMove: _onCameraMove, // Updates zoom level on camera move
             initialCameraPosition: CameraPosition(
               target: _defaultPosition,
-              zoom: 11.0,
+              zoom: _currentZoom,
             ),
             myLocationButtonEnabled: false,
             myLocationEnabled: true,
           ),
           if (isLoading)
             const Center(
-              child: Loading(),
+              child: CircularProgressIndicator(),
             ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          if (_currentPosition != null && mapController != null) {
-            await mapController!.animateCamera(
-              CameraUpdate.newLatLngZoom(_currentPosition!, _smoothZoom),
-            );
-          }
-        },
+        onPressed: _updateCurrentLocation,
         child: const Icon(Icons.my_location),
       ),
     );

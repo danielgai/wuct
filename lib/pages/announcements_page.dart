@@ -22,7 +22,7 @@ class _AnnouncementsPageState extends State<AnnouncementsPage> {
     _bodyController.clear();
     // Show a snackbar to confirm
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Announcement sent!')),
+      const SnackBar(content: Text('Announcement sent!')),
     );
   }
 
@@ -37,7 +37,7 @@ class _AnnouncementsPageState extends State<AnnouncementsPage> {
           children: [
             TextField(
               controller: _titleController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Title',
                 hintText: 'Use a short, descriptive title.',
                 border: OutlineInputBorder(),
@@ -47,7 +47,7 @@ class _AnnouncementsPageState extends State<AnnouncementsPage> {
             const SizedBox(height: 16),
             TextField(
               controller: _bodyController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: 'Enter the announcement details here.',
                 border: OutlineInputBorder(),
               ),
@@ -56,7 +56,7 @@ class _AnnouncementsPageState extends State<AnnouncementsPage> {
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: _sendAnnouncement,
-              child: Text('Send Announcement'),
+              child: const Text('Send Announcement'),
             ),
           ],
         ),
