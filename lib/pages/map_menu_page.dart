@@ -29,7 +29,9 @@ class _MapMenuPageState extends State<MapMenuPage> {
 
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 160, 233, 162),
-      appBar: const CustomAppBar(label: 'Locations'),
+      appBar: const CustomAppBar(
+        label: 'Locations',
+      ),
       body: Column(
         children: [
           Padding(
@@ -52,11 +54,21 @@ class _MapMenuPageState extends State<MapMenuPage> {
             itemCount: filteredLocations.length,
             itemBuilder: (context, index) {
               final entry = filteredLocations[index];
-              return ListTile(
-                title: Text(entry.key),
-                onTap: () {
-                  print(entry.value);
-                },
+              return Column(
+                children: [
+                  ListTile(
+                    title: Text(entry.key),
+                    onTap: () {
+                      print(entry.value);
+                    },
+                  ),
+                  const Divider(
+                    thickness: 1,
+                    indent: 16,
+                    endIndent: 16,
+                    color: Colors.green,
+                  )
+                ],
               );
             },
           )),

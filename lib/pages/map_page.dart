@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:wuct/shared/custom_app_bar.dart';
+import 'package:wuct/pages/map_menu_page.dart'; // Import MapMenuPage
 
 class MapPage extends StatefulWidget {
   const MapPage({super.key});
@@ -82,7 +83,23 @@ class _MapPageState extends State<MapPage> {
         label: 'Maps',
         withHamburger: true,
         onHamburgerPressed: () {
-          Navigator.of(context).pushNamed('/mapMenu');
+          Navigator.of(context).push(
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  const MapMenuPage(),
+              transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                const begin = Offset(1.0, 0.0); // Slide in from right
+                const end = Offset.zero;
+                const curve = Curves.easeInOut;
+
+                var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+                return SlideTransition(
+                  position: animation.drive(tween),
+                  child: child,
+                );
+              },
+            ),
+          );
         },
       ),
       body: Stack(

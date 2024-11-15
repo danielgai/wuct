@@ -6,6 +6,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool withHamburger;
   final Color backgroundColor;
   final VoidCallback? onHamburgerPressed;
+  final Icon icon;
 
   const CustomAppBar({
     super.key,
@@ -13,6 +14,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.withHamburger = false,
     this.backgroundColor = const Color.fromRGBO(46, 125, 50, 1),
     this.onHamburgerPressed,
+    this.icon = const Icon(Icons.arrow_back, color: Colors.white),
   });
 
   @override
@@ -22,7 +24,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       centerTitle: true,
       backgroundColor: backgroundColor,
       leading: IconButton(
-        icon: const Icon(Icons.arrow_back, color: Colors.white),
+        icon: icon,
         onPressed: () {
           Navigator.of(context).pop();
         },

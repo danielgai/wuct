@@ -72,28 +72,7 @@ void main() async {
         '/mapMenu': (context) => const MapMenuPage(),
         '/sendAnnouncement': (context) => const AnnouncementsPage(),
       },
-      onGenerateRoute: (settings) {
-        if (settings.name == '/mapMenu') {
-          return PageRouteBuilder(
-            pageBuilder: (context, animation, secondaryAnimation) =>
-                const MapMenuPage(),
-            transitionsBuilder:
-                (context, animation, secondaryAnimation, child) {
-              const begin = Offset(1.0, 0.0); // Slide from right to left
-              const end = Offset.zero;
-              const curve = Curves.ease;
-
-              var tween =
-                  Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-              return SlideTransition(
-                position: animation.drive(tween),
-                child: child,
-              );
-            },
-          );
-        }
-        return null;
-      }, // home: WebViewApp(),
+      // home: WebViewApp(),
       //throws an error if you have both home property and / cause of redundancy
       //will comment OUT home property here for now
     ),
