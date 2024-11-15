@@ -4,7 +4,7 @@ class GeolocationService {
 Stream<Position> getPositionStream() {
   LocationSettings locationSettings = const LocationSettings(
     accuracy: LocationAccuracy.high,
-    distanceFilter: 1, // Update when moved 1 meter
+    distanceFilter: 5, // Update when moved 1 meter
   );
   return Geolocator.getPositionStream(locationSettings: locationSettings);
 }

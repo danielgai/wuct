@@ -2,18 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'dart:ui' as ui;
 import 'package:wuct/shared/custom_app_bar.dart';
-
-class LatLngTween extends Tween<LatLng> {
-  LatLngTween({super.begin, super.end});
-
-  @override
-  LatLng lerp(double t) => LatLng(
-        ui.lerpDouble(begin!.latitude, end!.latitude, t)!,
-        ui.lerpDouble(begin!.longitude, end!.longitude, t)!,
-      );
-}
 
 class MapPage extends StatefulWidget {
   const MapPage({super.key});
@@ -63,6 +52,7 @@ class _MapPageState extends State<MapPage> {
       }
     } catch (e) {
       print(e);
+      Navigator.of(context).pop();
     } finally {
       setState(() {
         isLoading = false;
@@ -88,7 +78,13 @@ class _MapPageState extends State<MapPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(label: 'Maps'),
+      appBar: CustomAppBar(
+        label: 'Maps',
+        withHamburger: true,
+        onHamburgerPressed: () {
+          Navigator.of(context).pushNamed('/mapMenu');
+        },
+      ),
       body: Stack(
         children: [
           GoogleMap(
