@@ -35,7 +35,7 @@ class _ProfileState extends ConsumerState<Profile> {
     final authState = ref.watch(authProvider);
 
     return Scaffold(
-      appBar: CustomAppBar(label: 'Profile'),
+      appBar: const CustomAppBar(label: 'Profile'),
       body: authState.when(
         data: (user) {
           if (user != null) {

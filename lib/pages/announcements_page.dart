@@ -29,7 +29,7 @@ class _AnnouncementsPageState extends State<AnnouncementsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(label: 'Send Announcement'),
+      appBar: const CustomAppBar(label: 'Send Announcement'),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(16, 40, 16, 16),
         child: Column(

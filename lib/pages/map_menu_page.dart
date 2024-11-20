@@ -10,13 +10,6 @@ class MapMenuPage extends StatefulWidget {
 }
 
 class _MapMenuPageState extends State<MapMenuPage> {
-  final List<String> locations = [
-    "Central Park",
-    "Times Square",
-    "Statue of Liberty",
-    "Brooklyn Bridge",
-    "Empire State Building"
-  ];
 
   String query = ""; // User's search query
 
@@ -59,6 +52,7 @@ class _MapMenuPageState extends State<MapMenuPage> {
                   ListTile(
                     title: Text(entry.key),
                     onTap: () {
+                      Navigator.pop(context, [entry.value, entry.key]);
                       print(entry.value);
                     },
                   ),

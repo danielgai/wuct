@@ -35,7 +35,7 @@ class _NotificationsPageState extends ConsumerState<NotificationsPage> {
   Widget build(BuildContext context) {
     final authState = ref.watch(authProvider);
     return Scaffold(
-        appBar: CustomAppBar(label: "Notifications"),
+        appBar: const CustomAppBar(label: "Notifications"),
         body: authState.when(
           data: (user) {
             const Column(
