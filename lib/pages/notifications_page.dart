@@ -63,6 +63,7 @@ class _NotificationsPageState extends ConsumerState<NotificationsPage> {
                         title: notification.title,
                         date: DateFormat('yyyy-MM-dd').format(notification.timestamp),
                         message: notification.text,
+                        onDismissed: () {},
                       );
                     },
                   ),
