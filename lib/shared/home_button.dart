@@ -5,6 +5,7 @@ class HomeButton extends StatelessWidget {
   final IconData icon;
   final String? url;
   final Function(BuildContext)? onPressed;
+  final int? numUnseenNotifications;
 
   const HomeButton({
     super.key,
@@ -12,6 +13,7 @@ class HomeButton extends StatelessWidget {
     required this.icon,
     this.url,
     this.onPressed,
+    this.numUnseenNotifications,
   });
 
   @override
@@ -37,10 +39,36 @@ class HomeButton extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            icon,
-            size: 48,
-            color: Colors.green[900],
+          Stack(
+            children: [
+              Icon(
+                icon,
+                size: 48,
+                color: Colors.green[900],
+              ),
+              if (numUnseenNotifications != null && numUnseenNotifications! > 0)
+                Positioned(
+                  top: 0,
+                  right: 0,
+                  child: Container(
+                    padding: const EdgeInsets.all(4),
+                    decoration: BoxDecoration(
+                      color: Colors.red,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Text(
+                      numUnseenNotifications! > 99
+                          ? '99+' // Display "99+" for large numbers
+                          : numUnseenNotifications.toString(),
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+            ],
           ),
           const SizedBox(height: 12),
           Text(
@@ -64,11 +92,13 @@ class ButtonData {
   final IconData icon;
   final String? url;
   final Function(BuildContext)? onPressed;
+  final int? numUnseenNotifications;
 
   ButtonData({
     required this.label,
     required this.icon,
     this.url,
     this.onPressed,
+    this.numUnseenNotifications,
   });
 }

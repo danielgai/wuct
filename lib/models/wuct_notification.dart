@@ -11,7 +11,7 @@ class WUCTNotification {
   final String sender;
   final String title;
   final String text;
-  final bool hasSeen;
+  bool hasSeen;
 
   factory WUCTNotification.fromMap(Map<String, dynamic> map) {
     return WUCTNotification(
@@ -22,6 +22,16 @@ class WUCTNotification {
       sender: map['sender'] ?? '',
       hasSeen: map['hasSeen'] ?? false,
     );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'title': title,
+      'text': text,
+      'timestamp': timestamp.toIso8601String(),
+      'sender': sender,
+      'hasSeen': hasSeen,
+    };
   }
 
   @override

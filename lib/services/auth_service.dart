@@ -139,12 +139,76 @@ class AuthService {
   static Future<void> changeValue(
       String userId, String fieldName, dynamic newValue) async {
     try {
+      if (userId.isEmpty || fieldName.isEmpty) {
+        return Future.error('Invalid userId or fieldName.');
+      }
       // Update the specific field of the user's document
       await _ref.collection('users').doc(userId).update({
         fieldName: newValue,
       });
     } catch (e) {
       return Future.error('Failed to update user data: ${e.toString()}');
+    }
+  }
+
+  Future<void> readNotification(String userId, int index) async {
+    try {
+      final docSnapshot = await _ref.collection('users').doc(userId).get();
+      final data = docSnapshot.data();
+
+      if (data == null || !data.containsKey('notifications')) {
+        return Future.error('No notifications found for this user.');
+      }
+
+      List<WUCTNotification> notificationsData =
+          (data['notifications'] as List?)
+                  ?.map((item) =>
+                      WUCTNotification.fromMap(item as Map<String, dynamic>))
+                  .toList() ??
+              [];
+
+      if (index < 0 || index >= notificationsData.length) {
+        return Future.error('Index out of bounds.');
+      }
+
+      notificationsData[index].hasSeen = true;
+
+      List<Map<String, dynamic>> serializedNotifications =
+          notificationsData.map((n) => n.toMap()).toList();
+      await changeValue(userId, 'notifications', serializedNotifications);
+    } catch (err) {
+      return Future.error('Failed to read notification: $err');
+    }
+  }
+
+  Future<void> deleteNotification(String userId, int index) async {
+    try {
+      final docSnapshot = await _ref.collection('users').doc(userId).get();
+      final data = docSnapshot.data();
+
+      if (data == null || !data.containsKey('notifications')) {
+        return Future.error('No notifications found for this user.');
+      }
+
+      List<WUCTNotification> notificationsData =
+          (data['notifications'] as List?)
+                  ?.map((item) =>
+                      WUCTNotification.fromMap(item as Map<String, dynamic>))
+                  .toList() ??
+              [];
+
+      if (index < 0 || index >= notificationsData.length) {
+        return Future.error('Index out of bounds.');
+      }
+
+      notificationsData.removeAt(index);
+
+      List<Map<String, dynamic>> serializedNotifications =
+          notificationsData.map((n) => n.toMap()).toList();
+      print(serializedNotifications);
+      await changeValue(userId, 'notifications', serializedNotifications);
+    } catch (err) {
+      return Future.error('Failed to delete notification: $err');
     }
   }
 }

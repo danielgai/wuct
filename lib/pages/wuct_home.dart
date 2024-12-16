@@ -17,6 +17,11 @@ class WUCTHome extends ConsumerWidget {
     return user.when(
       data: (user) {
         // Define a list of buttons with their properties
+        final int numUnseenNotifications = user?.notifications
+                .where((notification) => !notification.hasSeen)
+                .length ??
+            0;
+            
         final List<ButtonData> buttons = [
           if (user == null)
             ButtonData(
@@ -45,8 +50,6 @@ class WUCTHome extends ConsumerWidget {
               icon: Icons.directions,
               onPressed: (context) {
                 Navigator.of(context).pushNamed('/map');
-
-                // Define your find room action here
               },
             ),
           if (user != null)
@@ -57,6 +60,7 @@ class WUCTHome extends ConsumerWidget {
                 // Define your notifications action here
                 Navigator.of(context).pushNamed('/notifications');
               },
+              numUnseenNotifications: numUnseenNotifications
             ),
           ButtonData(
             label: 'FAQs',
@@ -140,6 +144,7 @@ class WUCTHome extends ConsumerWidget {
                               icon: buttons[index].icon,
                               url: buttons[index].url,
                               onPressed: buttons[index].onPressed,
+                              numUnseenNotifications: buttons[index].numUnseenNotifications,
                             );
                           },
                         );

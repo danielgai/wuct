@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:wuct/pages/loading.dart';
 import 'package:wuct/providers/auth_provider.dart';
+import 'package:wuct/services/auth_service.dart';
 import 'package:wuct/shared/custom_app_bar.dart';
 import 'package:wuct/shared/notification_box.dart';
 
@@ -63,7 +64,20 @@ class _NotificationsPageState extends ConsumerState<NotificationsPage> {
                         title: notification.title,
                         date: DateFormat('yyyy-MM-dd').format(notification.timestamp),
                         message: notification.text,
-                        onDismissed: () {},
+                        onDismissed: () async {
+                          try {
+                            await AuthService().deleteNotification(user.uid, index);
+                          } catch (err) {
+                            print(err);
+                          }
+                        },
+                        onPressed: () async {
+                          try {
+                            await AuthService().readNotification(user.uid, index);
+                          } catch (err) {
+                            print(err);
+                          }
+                        },
                       );
                     },
                   ),

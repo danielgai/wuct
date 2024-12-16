@@ -36,7 +36,8 @@ class NotificationService {
   Future<void> sendNotificationToPhone(
       AppUser sender, String title, String text) async {
     try {
-      String formattedTimestamp = DateFormat('yyyy-MM-dd').format(DateTime.now());
+      String formattedTimestamp =
+          DateFormat('yyyy-MM-dd').format(DateTime.now());
 
       final Map<String, dynamic> payload = {
         'title': title,
