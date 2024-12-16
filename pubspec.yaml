@@ -21,6 +21,8 @@ dependencies:
   geolocator: ^13.0.1
   google_fonts: ^6.2.1
   google_maps_flutter: ^2.9.0
+  http: ^1.2.2
+  intl: ^0.20.1
   webview_flutter: ^4.10.0
 
 dev_dependencies:

@@ -10,10 +10,10 @@ module.exports = {
   rules: {
     'no-restricted-globals': ['error', 'name', 'length'],
     'prefer-arrow-callback': 'error',
-    quotes: ['error', 'single', { allowTemplateLiterals: true }],
     'no-unused-vars': 'warn',
     'object-curly-spacing': 'off',
-    indent: 'off',
+    'quotes': ['error', 'single'], // Use single quotes for consistency
+    'indent': ['error', 2], // Ensure consistent indentation rule
   },
   overrides: [
     {

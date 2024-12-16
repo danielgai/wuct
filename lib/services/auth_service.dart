@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:wuct/models/app_user.dart';
+import 'package:wuct/models/wuct_notification.dart';
 import 'package:wuct/providers/auth_provider.dart';
 import 'package:wuct/services/notification_service.dart';
 
@@ -94,8 +94,12 @@ class AuthService {
 
             // Retrieve the existing FCM tokens from Firestore
             List<String> fcmTokens = List<String>.from(data['fcmTokens'] ?? []);
-            List<Notification> notifications =
-                List<Notification>.from(data['notifications'] ?? []);
+            List<WUCTNotification> notifications = (data['notifications']
+                        as List?)
+                    ?.map((item) =>
+                        WUCTNotification.fromMap(item as Map<String, dynamic>))
+                    .toList() ??
+                [];
 
             // If the new FCM token is not in the list, add it to Firestore
             if (fcmToken != null && !fcmTokens.contains(fcmToken)) {

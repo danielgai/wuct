@@ -13,9 +13,10 @@ exports.sendAnnouncementNotification = functions.https.onRequest(
 
     const notification = {
       title: title,
-      message: message,
+      text: message,
       sender: sender, // Include sender's email in the notification object
       timestamp: timestamp,
+      hasSeen: false,
     };
 
     try {

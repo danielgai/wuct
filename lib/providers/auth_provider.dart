@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:wuct/models/app_user.dart';
+import 'package:wuct/models/wuct_notification.dart';
 
 final authProvider = StreamProvider.autoDispose<AppUser?>((ref) {
   return FirebaseAuth.instance.authStateChanges().asyncExpand((user) {
@@ -21,10 +21,12 @@ final authProvider = StreamProvider.autoDispose<AppUser?>((ref) {
           // Safely cast the fcmTokens to List<String>
           final List<String> fcmTokens =
               List<String>.from(data['fcmTokens'] ?? []);
-
-          final List<Notification> notifications =
-              List<Notification>.from(data['notifications'] ?? []);
-
+          List<WUCTNotification> notifications = (data['notifications']
+                      as List?)
+                  ?.map((item) =>
+                      WUCTNotification.fromMap(item as Map<String, dynamic>))
+                  .toList() ??
+              [];
           // Return an AppUser instance with additional data
           return AppUser(
               uid: user.uid,

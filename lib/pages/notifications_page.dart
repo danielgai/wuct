@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 import 'package:wuct/pages/loading.dart';
 import 'package:wuct/providers/auth_provider.dart';
 import 'package:wuct/shared/custom_app_bar.dart';
+import 'package:wuct/shared/notification_box.dart';
 
 // class NotificationsPage extends ConsumerStatefulWidget {
 //   const NotificationsPage({super.key});
@@ -38,14 +40,35 @@ class _NotificationsPageState extends ConsumerState<NotificationsPage> {
         appBar: const CustomAppBar(label: "Notifications"),
         body: authState.when(
           data: (user) {
-            const Column(
+            if (user?.notifications == null || user!.notifications.isEmpty) {
+              return const Padding(
+                padding: EdgeInsets.fromLTRB(16, 16, 16, 300),
+                child: Center(
+                  child: Text(
+                    'No notifications available',
+                    style: TextStyle(fontSize: 18),
+                  ),
+                ),
+              );
+            }
+            return Column(
               children: [
-                // Text(message.notification!.title.toString()),
-                // Text(message.notification!.body.toString()),
-                // Text(message.data.toString())
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: user.notifications.length,
+                    itemBuilder: (context, index) {
+                      final notification = user.notifications[index];
+                      return NotificationBox(
+                        sender: notification.sender,
+                        title: notification.title,
+                        date: DateFormat('yyyy-MM-dd').format(notification.timestamp),
+                        message: notification.text,
+                      );
+                    },
+                  ),
+                ),
               ],
             );
-            return null;
           },
           loading: () => const Center(child: Loading()),
           error: (error, stackTrace) =>
