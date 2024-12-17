@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:wuct/models/app_user.dart';
-import 'package:wuct/pages/loading.dart';
 import 'package:wuct/services/auth_service.dart';
 import 'package:wuct/shared/custom_snack_bar.dart';
 import 'package:wuct/shared/home_button.dart';
@@ -161,7 +160,7 @@ class WUCTHome extends ConsumerWidget {
       error: (error, stackTrace) {
         return const Center(child: Text('Error loading user data'));
       },
-      loading: () => const Center(child: Loading()),
+      loading: () => const Center(child: CircularProgressIndicator(color: Colors.blue)),
     );
   }
 

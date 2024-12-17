@@ -79,8 +79,9 @@ class _MapPageState extends State<MapPage> {
     return Scaffold(
       appBar: CustomAppBar(
         label: 'Maps',
-        withHamburger: true,
-        onHamburgerPressed: () async {
+        withExtraIcon: true,
+        extraIcon: Icons.menu,
+        onExtraIconPressed: () async {
           final result = await Navigator.of(context).push(
             PageRouteBuilder(
               pageBuilder: (context, animation, secondaryAnimation) =>

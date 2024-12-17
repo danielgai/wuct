@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:wuct/pages/loading.dart';
 import 'package:wuct/providers/auth_provider.dart';
 import 'package:wuct/services/auth_service.dart';
 import 'package:wuct/shared/custom_app_bar.dart';
@@ -183,7 +182,7 @@ class _ProfileState extends ConsumerState<Profile> {
             return const Center(child: Text('No user data available'));
           }
         },
-        loading: () => const Center(child: Loading()),
+        loading: () => const Center(child: CircularProgressIndicator(color: Colors.blue)),
         error: (error, stackTrace) =>
             Center(child: Text('Error loading user data: $error')),
       ),

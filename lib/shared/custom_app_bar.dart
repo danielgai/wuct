@@ -3,18 +3,20 @@ import 'package:wuct/shared/styled_text.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String label;
-  final bool withHamburger;
+  final bool withExtraIcon;
   final Color backgroundColor;
-  final VoidCallback? onHamburgerPressed;
-  final Icon icon;
+  final VoidCallback? onExtraIconPressed;
+  final Icon backIcon;
+  final IconData? extraIcon;
 
   const CustomAppBar({
     super.key,
     required this.label,
-    this.withHamburger = false,
+    this.withExtraIcon = false,
     this.backgroundColor = const Color.fromRGBO(46, 125, 50, 1),
-    this.onHamburgerPressed,
-    this.icon = const Icon(Icons.arrow_back, color: Colors.white),
+    this.onExtraIconPressed,
+    this.backIcon = const Icon(Icons.arrow_back, color: Colors.white),
+    this.extraIcon,
   });
 
   @override
@@ -24,16 +26,16 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       centerTitle: true,
       backgroundColor: backgroundColor,
       leading: IconButton(
-        icon: icon,
+        icon: backIcon,
         onPressed: () {
           Navigator.of(context).pop();
         },
       ),
-      actions: withHamburger
+      actions: withExtraIcon
           ? [
               IconButton(
-                icon: const Icon(Icons.menu, color: Colors.white),
-                onPressed: onHamburgerPressed ?? () {},
+                icon: Icon(extraIcon, color: Colors.white),
+                onPressed: onExtraIconPressed ?? () {},
               ),
             ]
           : [],

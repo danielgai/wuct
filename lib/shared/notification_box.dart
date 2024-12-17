@@ -7,6 +7,7 @@ class NotificationBox extends StatelessWidget {
   final String message;
   final VoidCallback onDismissed; // Callback for dismissal
   final VoidCallback onPressed;
+  final Color containerColor;
 
   const NotificationBox({
     super.key,
@@ -16,6 +17,7 @@ class NotificationBox extends StatelessWidget {
     required this.message,
     required this.onDismissed,
     required this.onPressed,
+    required this.containerColor,
   });
 
   @override
@@ -37,7 +39,7 @@ class NotificationBox extends StatelessWidget {
           child: Container(
             margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
-            color: Colors.white, // Flat background color
+            color: containerColor, // Flat background color
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
