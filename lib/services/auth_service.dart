@@ -151,7 +151,7 @@ class AuthService {
     }
   }
 
-  Future<void> readNotification(String userId, int index) async {
+  Future<void> readNotification(String userId, int index, bool notificationMarkedAs) async {
     try {
       final docSnapshot = await _ref.collection('users').doc(userId).get();
       final data = docSnapshot.data();
@@ -171,7 +171,7 @@ class AuthService {
         return Future.error('Index out of bounds.');
       }
 
-      notificationsData[index].hasSeen = true;
+      notificationsData[index].hasSeen = notificationMarkedAs;
 
       List<Map<String, dynamic>> serializedNotifications =
           notificationsData.map((n) => n.toMap()).toList();

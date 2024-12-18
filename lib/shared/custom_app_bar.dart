@@ -6,6 +6,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool withExtraIcon;
   final Color backgroundColor;
   final VoidCallback? onExtraIconPressed;
+  final VoidCallback? onBackPressed;
   final Icon backIcon;
   final IconData? extraIcon;
 
@@ -15,6 +16,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.withExtraIcon = false,
     this.backgroundColor = const Color.fromRGBO(46, 125, 50, 1),
     this.onExtraIconPressed,
+    this.onBackPressed,
     this.backIcon = const Icon(Icons.arrow_back, color: Colors.white),
     this.extraIcon,
   });
@@ -27,9 +29,11 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: backgroundColor,
       leading: IconButton(
         icon: backIcon,
-        onPressed: () {
-          Navigator.of(context).pop();
-        },
+        onPressed: onBackPressed ??
+            () {
+              Navigator.of(context)
+                  .pop(); // Default behavior if no callback provided
+            },
       ),
       actions: withExtraIcon
           ? [

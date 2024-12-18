@@ -48,6 +48,7 @@ class NotificationsPage extends ConsumerWidget {
                     containerColor:
                         notification.hasSeen ? Colors.grey[200]! : Colors.white,
                     onDismissed: () async {
+                      //delete the notification
                       try {
                         ref.read(isLoadingProvider.notifier).state = true;
                         await AuthService().deleteNotification(user.uid, index);
@@ -60,14 +61,28 @@ class NotificationsPage extends ConsumerWidget {
                     onPressed: () async {
                       try {
                         ref.read(isLoadingProvider.notifier).state = true;
-                        await Navigator.of(context).push(PageRouteBuilder(
+                        final result =
+                            await Navigator.of(context).push(PageRouteBuilder(
                           pageBuilder:
                               (context, animation, secondaryAnimation) =>
                                   NotificationFullscreen(
-                                      notification: notification),
+                                      notification: notification,
+                                      userId: user.uid,
+                                      index: index),
                         ));
-                        if (!notification.hasSeen) {
-                          await AuthService().readNotification(user.uid, index);
+                        //result returns array of bool with information of whether notification will be makred and deleted
+                        bool notificationMarkedAs = result[0];
+                        bool hasDeleted = result[1];
+
+                        if (hasDeleted) {
+                          await AuthService()
+                              .deleteNotification(user.uid, index);
+                          return;
+                        }
+
+                        if (notification.hasSeen != notificationMarkedAs) {
+                          await AuthService().readNotification(
+                              user.uid, index, notificationMarkedAs);
                         }
                       } catch (err) {
                         print(err);

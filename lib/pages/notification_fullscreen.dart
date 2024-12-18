@@ -3,16 +3,39 @@ import 'package:intl/intl.dart';
 import 'package:wuct/models/wuct_notification.dart';
 import 'package:wuct/shared/custom_app_bar.dart';
 
-class NotificationFullscreen extends StatelessWidget {
+class NotificationFullscreen extends StatefulWidget {
   final WUCTNotification notification;
+  final String userId;
+  final int index;
 
-  const NotificationFullscreen({super.key, required this.notification});
+  const NotificationFullscreen(
+      {super.key,
+      required this.notification,
+      required this.userId,
+      required this.index});
+
+  @override
+  _NotificationFullscreenState createState() => _NotificationFullscreenState();
+}
+
+class _NotificationFullscreenState extends State<NotificationFullscreen> {
+  bool hasSeen = true;
+  bool hasDeleted = false;
+
+  void setHasSeen(bool value) {
+    setState(() {
+      hasSeen = value;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppBar(
+      appBar: CustomAppBar(
         label: "Notification Details",
+        onBackPressed: () {
+          Navigator.pop(context, [hasSeen, hasDeleted]);
+        },
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -25,7 +48,7 @@ class NotificationFullscreen extends StatelessWidget {
               children: [
                 Expanded(
                   child: Text(
-                    notification.title,
+                    widget.notification.title,
                     style: const TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
@@ -37,21 +60,27 @@ class NotificationFullscreen extends StatelessWidget {
                 ),
                 PopupMenuButton<String>(
                   icon: const Icon(Icons.more_vert),
-                  onSelected: (value) {
+                  onSelected: (value) async {
                     // Handle menu item selection
                     switch (value) {
                       case 'Mark as Unread':
-                        print('Marking as unread');
+                        setHasSeen(false);
+                        break;
+                      case 'Mark as Read':
+                        setHasSeen(true);
                         break;
                       case 'Delete':
-                        print('Deleting notification');
+                        setState(() {
+                          hasDeleted = true;
+                        });
+                        Navigator.pop(context, [hasSeen, hasDeleted]);
                         break;
                     }
                   },
                   itemBuilder: (context) => [
-                    const PopupMenuItem(
-                      value: 'Mark as Unread',
-                      child: Text('Mark as Unread'),
+                    PopupMenuItem(
+                      value: popupValue(hasSeen),
+                      child: Text(popupValue(hasSeen)),
                     ),
                     const PopupMenuItem(
                       value: 'Delete',
@@ -68,14 +97,14 @@ class NotificationFullscreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'From: ${notification.sender}',
+                  'From: ${widget.notification.sender}',
                   style: const TextStyle(
                     fontSize: 14,
                     color: Colors.grey,
                   ),
                 ),
                 Text(
-                  'Date: ${DateFormat('yyyy-MM-dd').format(notification.timestamp)}',
+                  'Date: ${DateFormat('yyyy-MM-dd').format(widget.notification.timestamp)}',
                   style: const TextStyle(
                     fontSize: 14,
                     color: Colors.grey,
@@ -93,7 +122,7 @@ class NotificationFullscreen extends StatelessWidget {
             Expanded(
               child: SingleChildScrollView(
                 child: Text(
-                  notification.text,
+                  widget.notification.text,
                   style: const TextStyle(
                     fontSize: 16,
                     color: Colors.black87,
@@ -107,4 +136,8 @@ class NotificationFullscreen extends StatelessWidget {
       ),
     );
   }
+}
+
+String popupValue(bool hasSeen) {
+  return hasSeen ? "Mark as Unread" : "Mark as Read";
 }
