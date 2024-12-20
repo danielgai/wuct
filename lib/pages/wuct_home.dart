@@ -15,12 +15,13 @@ class WUCTHome extends ConsumerWidget {
 
     return user.when(
       data: (user) {
+     
         // Define a list of buttons with their properties
         final int numUnseenNotifications = user?.notifications
                 .where((notification) => !notification.hasSeen)
                 .length ??
             0;
-            
+
         final List<ButtonData> buttons = [
           if (user == null)
             ButtonData(
@@ -53,14 +54,13 @@ class WUCTHome extends ConsumerWidget {
             ),
           if (user != null)
             ButtonData(
-              label: 'Notifications',
-              icon: Icons.notifications,
-              onPressed: (context) {
-                // Define your notifications action here
-                Navigator.of(context).pushNamed('/notifications');
-              },
-              numUnseenNotifications: numUnseenNotifications
-            ),
+                label: 'Notifications',
+                icon: Icons.notifications,
+                onPressed: (context) {
+                  // Define your notifications action here
+                  Navigator.of(context).pushNamed('/notifications');
+                },
+                numUnseenNotifications: numUnseenNotifications),
           ButtonData(
             label: 'FAQs',
             icon: Icons.help,
@@ -72,19 +72,9 @@ class WUCTHome extends ConsumerWidget {
             url: 'https://wuct.wustl.edu/about.html',
           ),
           ButtonData(
-            label: 'Feedback',
-            icon: Icons.chat,
-            onPressed: (context) {
-              // Define your feedback action here
-            },
-          ),
-          ButtonData(
-            label: 'Social',
-            icon: Icons.share,
-            onPressed: (context) {
-              // Define your social action here
-            },
-          ),
+              label: 'Social',
+              icon: Icons.share,
+              url: 'https://www.instagram.com/wusea_wuct/'),
           // Conditionally render "Send Announcement" button if the user is admin
           if (user != null && user.isAdmin)
             ButtonData(
@@ -143,7 +133,8 @@ class WUCTHome extends ConsumerWidget {
                               icon: buttons[index].icon,
                               url: buttons[index].url,
                               onPressed: buttons[index].onPressed,
-                              numUnseenNotifications: buttons[index].numUnseenNotifications,
+                              numUnseenNotifications:
+                                  buttons[index].numUnseenNotifications,
                             );
                           },
                         );
@@ -160,7 +151,8 @@ class WUCTHome extends ConsumerWidget {
       error: (error, stackTrace) {
         return const Center(child: Text('Error loading user data'));
       },
-      loading: () => const Center(child: CircularProgressIndicator(color: Colors.blue)),
+      loading: () =>
+          const Center(child: CircularProgressIndicator(color: Colors.blue)),
     );
   }
 

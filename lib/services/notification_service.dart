@@ -17,7 +17,6 @@ class NotificationService {
       sound: true,
     );
     final fcmToken = await _firebaseMessaging.getToken();
-    print(fcmToken); // Log the FCM token for debugging
     return fcmToken;
   }
 
@@ -58,14 +57,14 @@ class NotificationService {
       );
 
       // Handle the response
-      if (response.statusCode == 200) {
-        print('Notification sent successfully: ${response.body}');
-      } else {
-        print(
-            'Failed to send notification: ${response.statusCode} - ${response.body}');
-      }
+      // if (response.statusCode == 200) {
+      //   print('Notification sent successfully: ${response.body}');
+      // } else {
+      //   print(
+      //       'Failed to send notification: ${response.statusCode} - ${response.body}');
+      // }
     } catch (error) {
       print(error);
-    } finally {}
+    } 
   }
 }

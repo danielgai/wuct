@@ -51,7 +51,7 @@ class NotificationsPage extends ConsumerWidget {
                       //delete the notification
                       try {
                         ref.read(isLoadingProvider.notifier).state = true;
-                        await AuthService().deleteNotification(user.uid, index);
+                        await AuthService.deleteNotification(user.uid, index);
                       } catch (err) {
                         print(err);
                       } finally {
@@ -75,13 +75,12 @@ class NotificationsPage extends ConsumerWidget {
                         bool hasDeleted = result[1];
 
                         if (hasDeleted) {
-                          await AuthService()
-                              .deleteNotification(user.uid, index);
+                          await AuthService.deleteNotification(user.uid, index);
                           return;
                         }
 
                         if (notification.hasSeen != notificationMarkedAs) {
-                          await AuthService().readNotification(
+                          await AuthService.readNotification(
                               user.uid, index, notificationMarkedAs);
                         }
                       } catch (err) {

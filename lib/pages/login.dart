@@ -150,6 +150,13 @@ class _LoginPageState extends State<LoginPage> {
                   },
                   child: Text('Sign up instead', style: GoogleFonts.poppins()),
                 ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/resetPassword');
+                  },
+                  child:
+                      Text('Reset your password', style: GoogleFonts.poppins()),
+                ),
               ],
             ),
           ),

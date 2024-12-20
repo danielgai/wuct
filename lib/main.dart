@@ -10,13 +10,14 @@ import 'package:wuct/pages/map_menu_page.dart';
 import 'package:wuct/pages/map_page.dart';
 import 'package:wuct/pages/notifications_page.dart';
 import 'package:wuct/pages/profile.dart';
+import 'package:wuct/pages/reset_password_page.dart';
 import 'package:wuct/pages/signup.dart';
 import 'package:wuct/pages/web_view_container.dart';
 import 'package:wuct/pages/wuct_home.dart';
 import 'package:wuct/providers/auth_provider.dart';
-import 'package:wuct/services/screen_stack_observer.dart';
 
 import 'package:firebase_core/firebase_core.dart';
+import 'package:wuct/services/screen_stack_observer.dart';
 import 'firebase_options.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
@@ -71,6 +72,7 @@ void main() async {
         '/map': (context) => const MapPage(),
         '/mapMenu': (context) => const MapMenuPage(),
         '/sendAnnouncement': (context) => const AnnouncementsPage(),
+        '/resetPassword': (context) => const ResetPasswordPage(),
       },
       // home: WebViewApp(),
       //throws an error if you have both home property and / cause of redundancy

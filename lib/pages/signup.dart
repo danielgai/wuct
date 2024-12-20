@@ -35,7 +35,7 @@ class _SignupFormState extends State<SignupForm> {
       final user = await AuthService.signUp(email, password, washuID);
       if (user != null) {
         ScaffoldMessenger.of(context).showSnackBar(
-          CustomSnackBar(label: 'Signup Successful'),
+          CustomSnackBar(label: 'Signup Successful, Please Verify Your Email to Access Your Account'),
         );
         if (mounted) {
           Navigator.pop(context, '/home');

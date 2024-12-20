@@ -25,8 +25,13 @@ class AuthService {
             .get();
 
         if (washuIDExists.docs.isNotEmpty) {
+          await user.delete();
           return Future.error('WashU ID already exists.');
         }
+
+        //send a verification email
+        await user.sendEmailVerification();
+
         final String? fcmToken =
             await NotificationService().initNotifications();
         await _ref.collection('users').doc(user.uid).set({
@@ -39,6 +44,8 @@ class AuthService {
           'topicsID': '',
           'notifications': [],
         });
+
+        await _firebaseAuth.signOut();
         return AppUser(
             uid: user.uid,
             email: user.email!,
@@ -79,6 +86,14 @@ class AuthService {
       final UserCredential credential = await _firebaseAuth
           .signInWithEmailAndPassword(email: email, password: password);
       final User? user = credential.user;
+
+      if (user != null && !user.emailVerified) {
+        throw FirebaseAuthException(
+          message:
+              'Email not verified. Please check your inbox to verify your email.',
+          code: 'email-not-verified',
+        );
+      }
 
       if (user != null) {
         // Fetch the user document from Firestore
@@ -151,7 +166,8 @@ class AuthService {
     }
   }
 
-  Future<void> readNotification(String userId, int index, bool notificationMarkedAs) async {
+  static Future<void> readNotification(
+      String userId, int index, bool notificationMarkedAs) async {
     try {
       final docSnapshot = await _ref.collection('users').doc(userId).get();
       final data = docSnapshot.data();
@@ -181,7 +197,7 @@ class AuthService {
     }
   }
 
-  Future<void> deleteNotification(String userId, int index) async {
+  static Future<void> deleteNotification(String userId, int index) async {
     try {
       final docSnapshot = await _ref.collection('users').doc(userId).get();
       final data = docSnapshot.data();
@@ -205,10 +221,13 @@ class AuthService {
 
       List<Map<String, dynamic>> serializedNotifications =
           notificationsData.map((n) => n.toMap()).toList();
-      print(serializedNotifications);
       await changeValue(userId, 'notifications', serializedNotifications);
     } catch (err) {
       return Future.error('Failed to delete notification: $err');
     }
+  }
+
+  static Future<void> resetPassword(String email) async {
+    await _firebaseAuth.sendPasswordResetEmail(email: email);
   }
 }

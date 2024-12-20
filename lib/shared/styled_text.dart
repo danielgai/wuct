@@ -16,18 +16,29 @@ class StyledBodyText extends StatelessWidget {
 }
 
 class StyledHeading extends StatelessWidget {
-  const StyledHeading(this.text, {super.key});
+  const StyledHeading(
+    this.text, {
+    super.key,
+    this.fontSize = 32, // Default font size
+  });
 
   final String text;
+  final double fontSize;
 
   @override
   Widget build(BuildContext context) {
-    return Text(text, style: GoogleFonts.poppins(
-        textStyle: TextStyle(color: Colors.green[800], fontSize: 32),
-      )
+    return Text(
+      text,
+      style: GoogleFonts.poppins(
+        textStyle: TextStyle(
+          color: Colors.green[800],
+          fontSize: fontSize, 
+        ),
+      ),
     );
   }
 }
+
 
 class StyledAppBarText extends StatelessWidget {
   const StyledAppBarText(this.text, {super.key});

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+//class for testing purposes only
 class ScreenStackObserver extends NavigatorObserver {
   final List<String> screenStack = [];
 
