@@ -6,6 +6,7 @@ import 'package:wuct/providers/auth_provider.dart';
 import 'package:wuct/services/auth_service.dart';
 import 'package:wuct/shared/custom_app_bar.dart';
 import 'package:wuct/shared/notification_box.dart';
+import 'package:wuct/shared/styled_text.dart';
 
 // A simple provider to manage the loading state
 final isLoadingProvider = StateProvider<bool>((ref) => false);
@@ -28,10 +29,8 @@ class NotificationsPage extends ConsumerWidget {
                 return const Padding(
                   padding: EdgeInsets.fromLTRB(16, 16, 16, 300),
                   child: Center(
-                    child: Text(
-                      'No notifications available',
-                      style: TextStyle(fontSize: 18),
-                    ),
+                    child: StyledBodyText('No notifications available',
+                        fontSize: 18),
                   ),
                 );
               }

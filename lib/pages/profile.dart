@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:wuct/providers/auth_provider.dart';
 import 'package:wuct/services/auth_service.dart';
 import 'package:wuct/shared/custom_app_bar.dart';
-import 'package:wuct/shared/custom_snack_bar.dart'; // Import CustomSnackBar
+import 'package:wuct/shared/custom_snack_bar.dart';
+import 'package:wuct/shared/styled_text.dart'; // Import CustomSnackBar
 
 class Profile extends ConsumerStatefulWidget {
   const Profile({super.key});
@@ -50,16 +52,22 @@ class _ProfileState extends ConsumerState<Profile> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Email: ${user.email}',
-                        style: const TextStyle(fontSize: 18)),
+                    StyledBodyText(
+                      'Email: ${user.email}',
+                      fontSize: 18,
+                    ),
                     const SizedBox(height: 8),
-                    Text('WashU ID: ${user.washuID}',
-                        style: const TextStyle(fontSize: 18)),
+                    StyledBodyText(
+                      'WashU ID: ${user.washuID}',
+                      fontSize: 18,
+                    ),
                     const SizedBox(height: 8),
-                    Text('Admin Status: ${user.isAdmin ? 'Yes' : 'No'}',
-                        style: const TextStyle(fontSize: 18)),
+                    StyledBodyText(
+                      'Admin Status: ${user.isAdmin ? 'Yes' : 'No'}',
+                      fontSize: 18,
+                    ),
                     const SizedBox(height: 16),
-                
+
                     // Editable Team ID
                     _buildEditableField(
                       'Team ID',
@@ -79,9 +87,10 @@ class _ProfileState extends ConsumerState<Profile> {
                           if (user.teamID == _teamIDController.text) return;
                           await AuthService.changeValue(
                               user.uid, 'teamID', _teamIDController.text);
-                
+
                           ScaffoldMessenger.of(context).showSnackBar(
-                            CustomSnackBar(label: 'Team ID updated successfully'),
+                            CustomSnackBar(
+                                label: 'Team ID updated successfully'),
                           );
                         } catch (e) {
                           ScaffoldMessenger.of(context).showSnackBar(
@@ -91,7 +100,7 @@ class _ProfileState extends ConsumerState<Profile> {
                       },
                     ),
                     const SizedBox(height: 16),
-                
+
                     // Editable Topics ID
                     _buildEditableField(
                       'Topics ID',
@@ -111,20 +120,21 @@ class _ProfileState extends ConsumerState<Profile> {
                           if (user.topicsID == _topicsIDController.text) return;
                           await AuthService.changeValue(
                               user.uid, 'topicsID', _topicsIDController.text);
-                
+
                           ScaffoldMessenger.of(context).showSnackBar(
                             CustomSnackBar(
                                 label: 'Topics ID updated successfully'),
                           );
                         } catch (e) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            CustomSnackBar(label: 'Error updating Topics ID: $e'),
+                            CustomSnackBar(
+                                label: 'Error updating Topics ID: $e'),
                           );
                         }
                       },
                     ),
                     const SizedBox(height: 16),
-                
+
                     // Editable Individual ID
                     _buildEditableField(
                       'Individual ID',
@@ -141,12 +151,13 @@ class _ProfileState extends ConsumerState<Profile> {
                           setState(() {
                             isEditingIndividualID = false;
                           });
-                          if (user.individualID == _individualIDController.text) {
+                          if (user.individualID ==
+                              _individualIDController.text) {
                             return;
                           }
-                          await AuthService.changeValue(user.uid, 'individualID',
-                              _individualIDController.text);
-                
+                          await AuthService.changeValue(user.uid,
+                              'individualID', _individualIDController.text);
+
                           ScaffoldMessenger.of(context).showSnackBar(
                             CustomSnackBar(
                                 label: 'Individual ID updated successfully'),
@@ -160,12 +171,15 @@ class _ProfileState extends ConsumerState<Profile> {
                       },
                     ),
                     const SizedBox(height: 16),
-                
+
                     // Additional information (Placeholder for schedule)
                     const Center(
                       child: Column(
                         children: [
-                          Text('Your schedule:', style: TextStyle(fontSize: 16)),
+                          StyledBodyText(
+                            'Your schedule:',
+                            fontSize: 16,
+                          ),
                           SizedBox(height: 16),
                           // Placeholder image for schedule
                           Image(
@@ -182,7 +196,8 @@ class _ProfileState extends ConsumerState<Profile> {
             return const Center(child: Text('No user data available'));
           }
         },
-        loading: () => const Center(child: CircularProgressIndicator(color: Colors.blue)),
+        loading: () =>
+            const Center(child: CircularProgressIndicator(color: Colors.blue)),
         error: (error, stackTrace) =>
             Center(child: Text('Error loading user data: $error')),
       ),
@@ -206,12 +221,13 @@ class _ProfileState extends ConsumerState<Profile> {
                   decoration: InputDecoration(
                     labelText: label,
                   ),
+                  style: GoogleFonts.poppins(fontSize: 18),
                 )
               : GestureDetector(
                   onTap: onEdit,
                   child: Text(
                     '$label: $value',
-                    style: const TextStyle(fontSize: 18),
+                    style: GoogleFonts.poppins(fontSize: 18),
                   ),
                 ),
         ),

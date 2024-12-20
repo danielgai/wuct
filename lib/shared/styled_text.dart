@@ -2,16 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class StyledBodyText extends StatelessWidget {
-  const StyledBodyText(this.text, {super.key});
+  const StyledBodyText(this.text, {super.key, this.fontSize = 32});
 
   final String text;
+  final double fontSize;
 
   @override
   Widget build(BuildContext context) {
-    return Text(text, style: GoogleFonts.poppins(
-        textStyle: TextStyle(color: Colors.grey[800]),
-      )
-    );
+    return Text(text,
+        style: GoogleFonts.poppins(
+          textStyle: TextStyle(color: Colors.grey[800]),
+          fontSize: fontSize,
+        ));
   }
 }
 
@@ -32,13 +34,12 @@ class StyledHeading extends StatelessWidget {
       style: GoogleFonts.poppins(
         textStyle: TextStyle(
           color: Colors.green[800],
-          fontSize: fontSize, 
+          fontSize: fontSize,
         ),
       ),
     );
   }
 }
-
 
 class StyledAppBarText extends StatelessWidget {
   const StyledAppBarText(this.text, {super.key});
@@ -47,10 +48,11 @@ class StyledAppBarText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(text, style: GoogleFonts.poppins(
-        textStyle: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
-      )
-    );
+    return Text(text,
+        style: GoogleFonts.poppins(
+          textStyle: const TextStyle(
+              color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+        ));
   }
 }
 
@@ -61,9 +63,9 @@ class StyledErrorText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(text, style: GoogleFonts.poppins(
-        textStyle: const TextStyle(color: Colors.red),
-      )
-    );
+    return Text(text,
+        style: GoogleFonts.poppins(
+          textStyle: const TextStyle(color: Colors.red),
+        ));
   }
 }
