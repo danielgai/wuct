@@ -11,6 +11,7 @@ class AppUser {
     this.teamID = "",
     this.topicsID = "",
     this.notifications = const [],
+    this.scheduleImageURL = "",
   });
 
   final String teamID;
@@ -22,9 +23,10 @@ class AppUser {
   final bool isAdmin;
   final List<String> fcmTokens;
   final List<WUCTNotification> notifications;
+  final String scheduleImageURL;
 
   @override
   String toString() {
-    return 'AppUser(teamID: $teamID, topicsID: $topicsID, individualID: $individualID, uid: $uid, email: $email, washuID: $washuID, isAdmin: $isAdmin, fcmTokens: $fcmTokens, notifications: $notifications)';
+    return 'AppUser(teamID: $teamID, topicsID: $topicsID, individualID: $individualID, uid: $uid, email: $email, washuID: $washuID, isAdmin: $isAdmin, fcmTokens: $fcmTokens, notifications: $notifications, scheduleImageURL: $scheduleImageURL)';
   }
 }

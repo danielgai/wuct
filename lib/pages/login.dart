@@ -61,6 +61,7 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   String? _errorFeedback;
+  bool isLoading = false;
 
   Future<void> _signIn() async {
     setState(() {
@@ -69,6 +70,9 @@ class _LoginPageState extends State<LoginPage> {
     if (!_formKey.currentState!.validate()) return;
     final email = _emailController.text.trim();
     final password = _passwordController.text.trim();
+    setState(() {
+      isLoading = true;
+    });
     try {
       final user = await AuthService.signIn(email, password);
       if (user != null) {
@@ -82,6 +86,10 @@ class _LoginPageState extends State<LoginPage> {
     } catch (e) {
       setState(() {
         _errorFeedback = e.toString();
+      });
+    } finally {
+      setState(() {
+        isLoading = false;
       });
     }
   }
@@ -100,7 +108,9 @@ class _LoginPageState extends State<LoginPage> {
               children: [
                 const Center(child: StyledHeading('Welcome Back.')),
                 const SizedBox(height: 16),
-                const Center(child: StyledBodyText('Sign into your account')),
+                const Center(
+                    child:
+                        StyledBodyText('Sign into your account', fontSize: 16)),
                 const SizedBox(height: 16),
                 TextFormField(
                   controller: _emailController,
@@ -139,11 +149,23 @@ class _LoginPageState extends State<LoginPage> {
                   Text(_errorFeedback!,
                       style: const TextStyle(color: Colors.red)),
                 StyledButton(
-                  onPressed: _signIn,
-                  child: const StyledButtonText('Sign in'),
+                  onPressed: () {
+                    if (!isLoading) _signIn();
+                  },
+                  verticalEdgeInset: 12,
+                  horizontalEdgeInset: 24,
+                  child: isLoading
+                      ? const CircularProgressIndicator(
+                          color: Colors.white,
+                        )
+                      : const StyledButtonText('Sign in'),
                 ),
                 const SizedBox(height: 16),
-                const Center(child: StyledBodyText('Need an account?')),
+                const Center(
+                    child: StyledBodyText(
+                  'Need an account?',
+                  fontSize: 16,
+                )),
                 TextButton(
                   onPressed: () {
                     Navigator.pushReplacementNamed(context, '/signup');

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:wuct/services/auth_service.dart';
 import 'package:wuct/shared/custom_app_bar.dart';
 import 'package:wuct/shared/custom_snack_bar.dart';
@@ -50,11 +51,14 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const Center(child: StyledHeading('Forgot Your Password?', fontSize: 25)),
+                const Center(
+                    child:
+                        StyledHeading('Forgot Your Password?', fontSize: 25)),
                 const SizedBox(height: 16),
                 const Center(
                     child: StyledBodyText(
-                        'Enter your email to reset your password')),
+                        'Enter your email to reset your password',
+                        fontSize: 14)),
                 const SizedBox(height: 16),
                 TextFormField(
                   controller: _emailController,
@@ -79,6 +83,13 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                 StyledButton(
                   onPressed: _resetPassword,
                   child: const StyledButtonText('Send Reset Email'),
+                ),
+                const SizedBox(height: 16),
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context, '/login');
+                  },
+                  child: Text('Back to login page', style: GoogleFonts.poppins()),
                 ),
               ],
             ),

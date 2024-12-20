@@ -21,11 +21,13 @@ class _SignupFormState extends State<SignupForm> {
   final TextEditingController _washuIDController = TextEditingController();
 
   String? _errorFeedback;
+  bool isLoading = false;
 
   Future<void> _signUp() async {
     if (!_formKey.currentState!.validate()) return;
     setState(() {
       _errorFeedback = null;
+      isLoading = true;
     });
     final email = _emailController.text.trim();
     final password = _passwordController.text.trim();
@@ -35,7 +37,9 @@ class _SignupFormState extends State<SignupForm> {
       final user = await AuthService.signUp(email, password, washuID);
       if (user != null) {
         ScaffoldMessenger.of(context).showSnackBar(
-          CustomSnackBar(label: 'Signup Successful, Please Verify Your Email to Access Your Account'),
+          CustomSnackBar(
+              label:
+                  'Signup Successful, Please Verify Your Email to Access Your Account'),
         );
         if (mounted) {
           Navigator.pop(context, '/home');
@@ -44,6 +48,10 @@ class _SignupFormState extends State<SignupForm> {
     } catch (e) {
       setState(() {
         _errorFeedback = e.toString();
+      });
+    } finally {
+      setState(() {
+        isLoading = false;
       });
     }
   }
@@ -63,7 +71,8 @@ class _SignupFormState extends State<SignupForm> {
                 const Center(child: StyledHeading('Welcome.')),
                 const SizedBox(height: 16),
                 const Center(
-                    child: StyledBodyText('Sign up for a new account')),
+                    child: StyledBodyText('Sign up for a new account',
+                        fontSize: 16)),
                 const SizedBox(height: 16),
                 TextFormField(
                   controller: _emailController,
@@ -118,11 +127,19 @@ class _SignupFormState extends State<SignupForm> {
                   Text(_errorFeedback!,
                       style: const TextStyle(color: Colors.red)),
                 StyledButton(
-                  onPressed: _signUp,
-                  child: const StyledButtonText('Sign up'),
+                  onPressed: () {
+                    if (!isLoading) _signUp();
+                  },
+                  child: isLoading
+                      ? const CircularProgressIndicator(
+                          color: Colors.white,
+                        )
+                      : const StyledButtonText('Sign up'),
                 ),
                 const SizedBox(height: 16),
-                const Center(child: StyledBodyText('Already have an account?')),
+                const Center(
+                    child: StyledBodyText('Already have an account?',
+                        fontSize: 16)),
                 TextButton(
                   onPressed: () {
                     Navigator.pushReplacementNamed(context, '/login');

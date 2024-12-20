@@ -34,15 +34,17 @@ final authProvider = StreamProvider.autoDispose<AppUser?>((ref) {
               [];
           // Return an AppUser instance with additional data
           return AppUser(
-              uid: user.uid,
-              email: user.email!,
-              washuID: washuID,
-              isAdmin: isAdmin,
-              fcmTokens: fcmTokens,
-              individualID: data['individualID'] ?? '',
-              teamID: data['teamID'] ?? '',
-              topicsID: data['topicsID'] ?? '',
-              notifications: notifications);
+            uid: user.uid,
+            email: user.email!,
+            washuID: washuID,
+            isAdmin: isAdmin,
+            fcmTokens: fcmTokens,
+            individualID: data['individualID'] ?? '',
+            teamID: data['teamID'] ?? '',
+            topicsID: data['topicsID'] ?? '',
+            notifications: notifications,
+            scheduleImageURL: data['scheduleImageURL'] ?? '',
+          );
         } else {
           // Document doesn't exist yet
           return null;

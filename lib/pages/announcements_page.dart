@@ -5,6 +5,7 @@ import 'package:wuct/providers/auth_provider.dart';
 import 'package:wuct/services/notification_service.dart';
 import 'package:wuct/shared/custom_app_bar.dart';
 import 'package:wuct/shared/custom_snack_bar.dart';
+import 'package:wuct/shared/styled_button.dart';
 
 class AnnouncementsPage extends ConsumerStatefulWidget {
   const AnnouncementsPage({super.key});
@@ -109,21 +110,10 @@ class _AnnouncementsPageState extends ConsumerState<AnnouncementsPage> {
                         ),
                         const SizedBox(height: 20),
                         Center(
-                          child: ElevatedButton(
-                            onPressed: isLoading
-                                ? null
-                                : () => _sendAnnouncement(user),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color.fromRGBO(
-                                  46, 125, 50, 1), // Match app green
-                              foregroundColor: Colors.white,
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 16, horizontal: 32),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              elevation: 3,
-                            ),
+                          child: StyledButton(
+                            onPressed: () {
+                              if (!isLoading) _sendAnnouncement(user);
+                            },
                             child: isLoading
                                 ? const CircularProgressIndicator(
                                     color: Colors.white,
@@ -150,7 +140,8 @@ class _AnnouncementsPageState extends ConsumerState<AnnouncementsPage> {
               ],
             );
           },
-          loading: () => const Center(child: CircularProgressIndicator(color: Colors.blue)),
+          loading: () => const Center(
+              child: CircularProgressIndicator(color: Colors.blue)),
           error: (error, stackTrace) =>
               Center(child: Text('Error loading user data: $error')),
         ),

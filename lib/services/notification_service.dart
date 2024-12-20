@@ -48,7 +48,8 @@ class NotificationService {
       const String cloudFunctionUrl =
           "https://us-central1-wuct-f27b5.cloudfunctions.net/sendAnnouncementNotification";
 
-      final response = await http.post(
+      //final response =
+      await http.post(
         Uri.parse(cloudFunctionUrl),
         headers: {
           'Content-Type': 'application/json',
@@ -65,6 +66,6 @@ class NotificationService {
       // }
     } catch (error) {
       print(error);
-    } 
+    }
   }
 }

@@ -43,6 +43,7 @@ class AuthService {
           'teamID': '',
           'topicsID': '',
           'notifications': [],
+          'scheduleImageURL': '',
         });
 
         await _firebaseAuth.signOut();
@@ -128,13 +129,15 @@ class AuthService {
 
             // Return AppUser with the updated FCM tokens
             return AppUser(
-                uid: user.uid,
-                email: data['email'] ?? '', // Email from Firestore data
-                washuID: data['washuID'] ?? '', // WashU ID from Firestore data
-                isAdmin:
-                    data['admin'] ?? false, // Admin status from Firestore data
-                fcmTokens: fcmTokens,
-                notifications: notifications);
+              uid: user.uid,
+              email: data['email'] ?? '', // Email from Firestore data
+              washuID: data['washuID'] ?? '', // WashU ID from Firestore data
+              isAdmin:
+                  data['admin'] ?? false, // Admin status from Firestore data
+              fcmTokens: fcmTokens,
+              notifications: notifications,
+              scheduleImageURL: data['scheduleImageURL'] ?? '',
+            );
           }
         }
       }
