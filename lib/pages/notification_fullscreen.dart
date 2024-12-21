@@ -15,7 +15,8 @@ class NotificationFullscreen extends StatefulWidget {
       required this.index});
 
   @override
-  _NotificationFullscreenState createState() => _NotificationFullscreenState();
+  _NotificationFullscreenState createState() =>
+      _NotificationFullscreenState();
 }
 
 class _NotificationFullscreenState extends State<NotificationFullscreen> {
@@ -44,8 +45,9 @@ class _NotificationFullscreenState extends State<NotificationFullscreen> {
           children: [
             // Title Row with Dropdown Menu
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // Title with wrapping support
                 Expanded(
                   child: Text(
                     widget.notification.title,
@@ -54,10 +56,10 @@ class _NotificationFullscreenState extends State<NotificationFullscreen> {
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
                     ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.left, // Aligns text to the left
                   ),
                 ),
+                const SizedBox(width: 8),
                 PopupMenuButton<String>(
                   icon: const Icon(Icons.more_vert),
                   onSelected: (value) async {

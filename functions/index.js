@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 
@@ -55,15 +56,24 @@ exports.sendAnnouncementNotification = functions.https.onRequest(
         .sendEachForMulticast(multicastMessage);
       console.log('Multicast response:', response);
 
-      // Save the notification to each user’s document in Firestore
-      const updatePromises = usersSnapshot.docs.map((doc) => {
+      const updatePromises = usersSnapshot.docs.map(async (doc) => {
         const userData = doc.data();
 
-        // Skip sender when updating notifications in Firestore
+        // Skip the sender when updating notifications
         if (userData.email === sender) return;
 
+        // Retrieve existing notifications
+        const notifications = userData.notifications || [];
+
+        // Add the new notification and ensure the limit is enforced
+        // there is a limit of 100 notifications per user document
+        const updatedNotifications =
+          notifications.length >= 100 ?
+            [...notifications.slice(-99), notification] : // Keep last 99 + new one
+            [...notifications, notification]; // Just add the new one
+
         return doc.ref.update({
-          notifications: admin.firestore.FieldValue.arrayUnion(notification),
+          notifications: updatedNotifications,
         });
       });
 

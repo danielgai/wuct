@@ -47,6 +47,8 @@ void main() async {
     child: MaterialApp(
       //theme: ThemeData(useMaterial3: true),
       //initialRoute: '/home',
+      debugShowCheckedModeBanner:
+          false, 
       navigatorObservers: [ScreenStackObserver()],
       routes: {
         '/': (context) => const Loading(),

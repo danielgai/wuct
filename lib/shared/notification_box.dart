@@ -23,31 +23,33 @@ class NotificationBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dismissible(
-        key: UniqueKey(), // Unique identifier for the Dismissible
-        direction: DismissDirection.endToStart, // Swipe from left to right
-        background: Container(
-          alignment: Alignment.centerLeft,
-          color: Colors.red,
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: const Icon(Icons.delete, color: Colors.white),
-        ),
-        onDismissed: (direction) {
-          onDismissed(); // Trigger callback when dismissed
-        },
-        child: GestureDetector(
-          onTap: onPressed,
-          child: Container(
-            margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
-            color: containerColor, // Flat background color
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Title and Date on the same row
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
+      key: UniqueKey(), // Unique identifier for the Dismissible
+      direction: DismissDirection.endToStart, // Swipe from left to right
+      background: Container(
+        alignment: Alignment.centerLeft,
+        color: Colors.red,
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: const Icon(Icons.delete, color: Colors.white),
+      ),
+      onDismissed: (direction) {
+        onDismissed(); // Trigger callback when dismissed
+      },
+      child: GestureDetector(
+        onTap: onPressed,
+        child: Container(
+          margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+          color: containerColor, // Flat background color
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Title and Sender in the same row with flexible spacing
+              Row(
+                children: [
+                  // Title (wraps to the next line if too long)
+                  Expanded(
+                    flex: 2,
+                    child: Text(
                       title,
                       style: const TextStyle(
                         fontSize: 16,
@@ -56,43 +58,51 @@ class NotificationBox extends StatelessWidget {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    Text(
+                  ),
+                  const SizedBox(width: 8), // Space between Title and Sender
+                  // Sender (wraps to the next line if too long)
+                  Expanded(
+                    flex: 1,
+                    child: Text(
                       sender,
                       style: const TextStyle(
                         fontSize: 12,
                         color: Colors.grey,
                       ),
-                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.right,
                     ),
-                  ],
-                ),
-                // Sender below the Date
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: Text(
-                    date,
-                    style: const TextStyle(
-                      fontSize: 12,
-                      color: Colors.grey,
-                    ),
-                    overflow: TextOverflow.ellipsis,
                   ),
-                ),
-                // Truncated message
-                Text(
-                  message.length > 35
-                      ? '${message.substring(0, 35)}...' // Truncate message
-                      : message,
+                ],
+              ),
+              const SizedBox(height: 4), // Spacing between rows
+              // Date aligned to the right
+              Align(
+                alignment: Alignment.centerRight,
+                child: Text(
+                  date,
                   style: const TextStyle(
-                    fontSize: 14,
-                    color: Colors.black87,
+                    fontSize: 12,
+                    color: Colors.grey,
                   ),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
                 ),
-              ],
-            ),
+              ),
+              const SizedBox(height: 4), // Spacing between rows
+              // Message (truncated if too long)
+              Text(
+                message.length > 35
+                    ? '${message.substring(0, 35)}...' // Truncate message
+                    : message,
+                style: const TextStyle(
+                  fontSize: 14,
+                  color: Colors.black87,
+                ),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 }
