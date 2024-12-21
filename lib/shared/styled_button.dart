@@ -2,26 +2,29 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class StyledButton extends StatelessWidget {
-  const StyledButton(
-      {super.key,
-      required this.onPressed,
-      required this.child,
-      this.verticalEdgeInset = 16,
-      this.horizontalEdgeInset = 32});
+  const StyledButton({
+    super.key,
+    required this.onPressed,
+    required this.child,
+    this.verticalEdgeInset = 16,
+    this.horizontalEdgeInset = 32,
+    this.buttonColor = const Color.fromRGBO(46, 125, 50, 1),
+  });
 
   final void Function() onPressed;
   final Widget child;
   final double verticalEdgeInset;
   final double horizontalEdgeInset;
+  final Color buttonColor;
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor:
-              const Color.fromRGBO(46, 125, 50, 1), // Match app green
+          backgroundColor: buttonColor, // Match app green
           foregroundColor: Colors.white,
-          padding: EdgeInsets.symmetric(vertical: verticalEdgeInset, horizontal: horizontalEdgeInset),
+          padding: EdgeInsets.symmetric(
+              vertical: verticalEdgeInset, horizontal: horizontalEdgeInset),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),

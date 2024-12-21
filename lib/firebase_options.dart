@@ -54,7 +54,7 @@ class DefaultFirebaseOptions {
     appId: '1:119351435657:android:0106c9c8ce8d1e5f4c0158',
     messagingSenderId: '119351435657',
     projectId: 'wuct-f27b5',
-    storageBucket: 'wuct-f27b5.appspot.com',
+    storageBucket: 'wuct-f27b5.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
@@ -62,7 +62,8 @@ class DefaultFirebaseOptions {
     appId: '1:119351435657:ios:d4d576c22277d1d94c0158',
     messagingSenderId: '119351435657',
     projectId: 'wuct-f27b5',
-    storageBucket: 'wuct-f27b5.appspot.com',
+    storageBucket: 'wuct-f27b5.firebasestorage.app',
     iosBundleId: 'com.example.wuct',
   );
+
 }

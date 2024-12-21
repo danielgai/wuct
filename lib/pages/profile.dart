@@ -3,8 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:wuct/providers/auth_provider.dart';
 import 'package:wuct/services/auth_service.dart';
+import 'package:wuct/services/storage_service.dart';
 import 'package:wuct/shared/custom_app_bar.dart';
 import 'package:wuct/shared/custom_snack_bar.dart';
+import 'package:wuct/shared/styled_button.dart';
 import 'package:wuct/shared/styled_text.dart'; // Import CustomSnackBar
 
 class Profile extends ConsumerStatefulWidget {
@@ -18,6 +20,7 @@ class _ProfileState extends ConsumerState<Profile> {
   bool isEditingTeamID = false;
   bool isEditingTopicsID = false;
   bool isEditingIndividualID = false;
+  bool isLoading = false;
 
   late TextEditingController _teamIDController;
   late TextEditingController _topicsIDController;
@@ -34,6 +37,12 @@ class _ProfileState extends ConsumerState<Profile> {
   @override
   Widget build(BuildContext context) {
     final authState = ref.watch(authProvider);
+
+    void setIsLoading(bool val) {
+      setState(() {
+        isLoading = val;
+      });
+    }
 
     return Scaffold(
       appBar: const CustomAppBar(label: 'Profile'),
@@ -172,22 +181,59 @@ class _ProfileState extends ConsumerState<Profile> {
                     ),
                     const SizedBox(height: 16),
 
-                    // Additional information (Placeholder for schedule)
-                    const Center(
-                      child: Column(
-                        children: [
-                          StyledBodyText(
-                            'Your schedule:',
-                            fontSize: 16,
+                    // Schedule Image Upload/Delete
+                    user.scheduleImageURL.isNotEmpty
+                        ? Center(
+                            child: Column(
+                              children: [
+                                const StyledBodyText(
+                                  'Your schedule:',
+                                  fontSize: 16,
+                                ),
+                                const SizedBox(height: 16),
+                                Image.network(user.scheduleImageURL),
+                                const SizedBox(height: 16),
+                                StyledButton(
+                                  onPressed: () async {
+                                    setIsLoading(true);
+                                    await StorageService.deleteImage(
+                                        user.scheduleImageURL, user.uid);
+                                    setIsLoading(false);
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      CustomSnackBar(
+                                          label:
+                                              'Schedule deleted successfully'),
+                                    );
+                                  },
+                                  buttonColor: Colors.red,
+                                  child: isLoading
+                                      ? const CircularProgressIndicator(
+                                          color: Colors.white)
+                                      : const StyledButtonText('Delete Schedule'),
+                                ),
+                              ],
+                            ),
+                          )
+                        : Column(
+                            children: [
+                              StyledButton(
+                                onPressed: () async {
+                                  setIsLoading(true);
+                                  await StorageService.uploadImage(user.uid);
+                                  setIsLoading(false);
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    CustomSnackBar(
+                                        label: 'Schedule updated'),
+                                  );
+                                },
+                                buttonColor: Colors.blue,
+                                child: isLoading
+                                    ? const CircularProgressIndicator(
+                                        color: Colors.white)
+                                    : const StyledButtonText('Upload Schedule'),
+                              ),
+                            ],
                           ),
-                          SizedBox(height: 16),
-                          // Placeholder image for schedule
-                          Image(
-                            image: AssetImage('assets/WUCT_Home.png'),
-                          ),
-                        ],
-                      ),
-                    ),
                   ],
                 ),
               ),
