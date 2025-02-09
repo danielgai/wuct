@@ -20,44 +20,46 @@ class _AnnouncementsPageState extends ConsumerState<AnnouncementsPage> {
   bool isLoading = false;
 
   Future<void> _sendAnnouncement(AppUser user) async {
-    if (_titleController.text.isEmpty || _bodyController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        CustomSnackBar(label: "Please fill out both fields."),
-      );
-      return;
-    }
-
-    try {
-      setState(() {
-        isLoading = true;
-      });
-
-      // Send the notification
-      final notificationService = NotificationService();
-      await notificationService.sendNotificationToPhone(
-        user, // Pass the current user
-        _titleController.text,
-        _bodyController.text,
-      );
-
-      // Clear the fields
-      _titleController.clear();
-      _bodyController.clear();
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        CustomSnackBar(label: "Announcement Sent"),
-      );
-    } catch (error) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        CustomSnackBar(label: "Error sending announcement: $error"),
-      );
-      Navigator.pop(context);
-    } finally {
-      setState(() {
-        isLoading = false;
-      });
-    }
+  if (_titleController.text.isEmpty || _bodyController.text.isEmpty) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      CustomSnackBar(label: "Please fill out both fields."),
+    );
+    return;
   }
+
+  try {
+    setState(() {
+      isLoading = true;
+    });
+
+    // Send the notification
+    final notificationService = NotificationService();
+    await notificationService.sendNotificationToPhone(
+      user, // Pass the current user
+      _titleController.text,
+      _bodyController.text,
+    );
+
+    // ✅ Success message only if no errors occur
+    ScaffoldMessenger.of(context).showSnackBar(
+      CustomSnackBar(label: "Announcement Sent"),
+    );
+
+    // Clear the fields after successful send
+    _titleController.clear();
+    _bodyController.clear();
+  } catch (error) {
+    // ✅ Proper error message
+    ScaffoldMessenger.of(context).showSnackBar(
+      CustomSnackBar(label: "Error: ${error.toString()}"),
+    );
+  } finally {
+    setState(() {
+      isLoading = false;
+    });
+  }
+}
+
 
   @override
   Widget build(BuildContext context) {
