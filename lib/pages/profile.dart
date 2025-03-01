@@ -66,10 +66,11 @@ class _ProfileState extends ConsumerState<Profile> {
                       fontSize: 18,
                     ),
                     const SizedBox(height: 8),
-                    StyledBodyText(
-                      'WashU ID: ${user.washuID}',
-                      fontSize: 18,
-                    ),
+                    if (user.washuID.isNotEmpty)
+                      StyledBodyText(
+                        'WashU ID: ${user.washuID}',
+                        fontSize: 18,
+                      ),
                     const SizedBox(height: 8),
                     StyledBodyText(
                       'Admin Status: ${user.isAdmin ? 'Yes' : 'No'}',
@@ -209,7 +210,8 @@ class _ProfileState extends ConsumerState<Profile> {
                                   child: isLoading
                                       ? const CircularProgressIndicator(
                                           color: Colors.white)
-                                      : const StyledButtonText('Delete Schedule'),
+                                      : const StyledButtonText(
+                                          'Delete Schedule'),
                                 ),
                               ],
                             ),
@@ -222,8 +224,7 @@ class _ProfileState extends ConsumerState<Profile> {
                                   await StorageService.uploadImage(user.uid);
                                   setIsLoading(false);
                                   ScaffoldMessenger.of(context).showSnackBar(
-                                    CustomSnackBar(
-                                        label: 'Schedule updated'),
+                                    CustomSnackBar(label: 'Schedule updated'),
                                   );
                                 },
                                 buttonColor: Colors.blue,

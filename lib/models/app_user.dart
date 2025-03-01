@@ -4,7 +4,7 @@ class AppUser {
   AppUser({
     required this.uid,
     required this.email,
-    required this.washuID,
+    this.washuID = "",
     required this.isAdmin,
     required this.fcmTokens,
     this.individualID = "",

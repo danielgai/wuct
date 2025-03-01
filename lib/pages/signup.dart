@@ -34,7 +34,7 @@ class _SignupFormState extends State<SignupForm> {
     final washuID = _washuIDController.text.trim();
 
     try {
-      final user = await AuthService.signUp(email, password, washuID);
+      final user = await AuthService.signUp(email, password, washuID: washuID);
       if (user != null) {
         ScaffoldMessenger.of(context).showSnackBar(
           CustomSnackBar(
@@ -108,12 +108,12 @@ class _SignupFormState extends State<SignupForm> {
                 const SizedBox(height: 16),
                 TextFormField(
                   controller: _washuIDController,
-                  decoration: const InputDecoration(labelText: 'WashU ID'),
+                  decoration: const InputDecoration(labelText: 'WashU ID (Optional)'),
                   validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Please enter your WashU ID";
-                    }
-                    if (value.length != 6) {
+                    // if (value == null || value.isEmpty) {
+                    //   return "Please enter your WashU ID";
+                    // }
+                    if (value != null && value.isNotEmpty && value.length != 6) {
                       return "WashU ID must be 6 digits long";
                     }
                     return null;

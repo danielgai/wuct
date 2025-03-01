@@ -10,23 +10,26 @@ class AuthService {
   static final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   static final FirebaseFirestore _ref = FirebaseFirestore.instance;
   // static final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
-  static Future<AppUser?> signUp(String email, String password, String washuID,
-      {bool isAdmin = false}) async {
+  static Future<AppUser?> signUp(String email, String password,
+      {String washuID = "", bool isAdmin = false}) async {
     try {
       //signup on firebase auth
       final UserCredential credential = await _firebaseAuth
           .createUserWithEmailAndPassword(email: email, password: password);
       //singup on firebase cloud database
       final User? user = credential.user;
+      
       if (user != null) {
-        final washuIDExists = await _ref
-            .collection('users')
-            .where('washuID', isEqualTo: washuID)
-            .get();
+        if (washuID.isNotEmpty) {
+          final washuIDExists = await _ref
+              .collection('users')
+              .where('washuID', isEqualTo: washuID)
+              .get();
 
-        if (washuIDExists.docs.isNotEmpty) {
-          await user.delete();
-          return Future.error('WashU ID already exists.');
+          if (washuIDExists.docs.isNotEmpty) {
+            await user.delete();
+            return Future.error('WashU ID already exists.');
+          }
         }
 
         //send a verification email
