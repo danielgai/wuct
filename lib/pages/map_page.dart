@@ -40,24 +40,38 @@ class _MapPageState extends State<MapPage> {
     });
 
     try {
-      Position position = await Geolocator.getCurrentPosition();
+      LocationPermission permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied ||
+          permission == LocationPermission.deniedForever) {
+        permission = await Geolocator.requestPermission();
+      }
+
+      if (permission == LocationPermission.denied ||
+          permission == LocationPermission.deniedForever) {
+        // Permission still denied — bail out safely
+        setState(() {
+          isLoading = false;
+        });
+        return;
+      }
+
+      final position = await Geolocator.getCurrentPosition();
       setState(() {
         _currentPosition = LatLng(position.latitude, position.longitude);
       });
 
-      if (mapController != null) {
-        mapController!.animateCamera(
-          CameraUpdate.newLatLngZoom(_currentPosition!, _currentZoom),
-        );
-      }
+      mapController?.animateCamera(
+        CameraUpdate.newLatLngZoom(_currentPosition!, _currentZoom),
+      );
     } catch (e) {
-      print('Error fetching location: $e');
+      debugPrint('Error fetching location: $e');
     } finally {
       setState(() {
         isLoading = false;
       });
     }
   }
+
 
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;

@@ -19,6 +19,7 @@ import 'package:wuct/providers/auth_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:wuct/services/screen_stack_observer.dart';
 import 'firebase_options.dart';
+import 'dart:io';
 
 final navigatorKey = GlobalKey<NavigatorState>();
 
@@ -29,9 +30,11 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: "lib/.env");
   const platform = MethodChannel('com.wuct/api');
-  final apiKey = dotenv.env['GOOGLE_MAPS_API_KEY_IOS'];
-  if (apiKey != null) {
-    await platform.invokeMethod('setApiKey', apiKey);
+  if (Platform.isIOS) {
+    final apiKey = dotenv.env['GOOGLE_MAPS_API_KEY_IOS'];
+    if (apiKey != null) {
+      await platform.invokeMethod('setApiKey', apiKey);
+    }
   }
 
   await Firebase.initializeApp(
