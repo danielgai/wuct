@@ -44,7 +44,6 @@ class WUCTHome extends ConsumerWidget {
             icon: Icons.event,
             url: 'https://wuct.wustl.edu/mobileschedule.html',
           ),
-          if (user != null)
             ButtonData(
               label: 'Find Room',
               icon: Icons.directions,

@@ -20,7 +20,7 @@ if (secretPropsFile.exists()) {
 
 
 android {
-    namespace = "com.example.wuct_mobile_app"
+    namespace = "com.example.wuct"
     compileSdk = 34
     ndkVersion = flutter.ndkVersion
 
