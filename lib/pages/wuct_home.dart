@@ -42,7 +42,7 @@ class WUCTHome extends ConsumerWidget {
           ButtonData(
             label: 'Schedule',
             icon: Icons.event,
-            url: 'https://wuct.wustl.edu/mobileschedule.html',
+            url: 'https://wuctwustl.org/wuctschedule.html',
           ),
             ButtonData(
               label: 'Find Room',
@@ -63,12 +63,12 @@ class WUCTHome extends ConsumerWidget {
           ButtonData(
             label: 'FAQs',
             icon: Icons.help,
-            url: 'https://wuct.wustl.edu/faq.html',
+            url: 'https://wuctwustl.org/faq.html',
           ),
           ButtonData(
             label: 'About',
             icon: Icons.info,
-            url: 'https://wuct.wustl.edu/about.html',
+            url: 'https://wuctwustl.org/about.html',
           ),
           ButtonData(
               label: 'Social',
