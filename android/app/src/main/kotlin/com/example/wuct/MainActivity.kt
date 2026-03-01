@@ -1,4 +1,4 @@
-package com.example.wuct
+package com.wuct.app
 
 import io.flutter.embedding.android.FlutterActivity
 

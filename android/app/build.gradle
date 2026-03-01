@@ -9,6 +9,12 @@ plugins {
     id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
 }
 
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file("key.properties")
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
+
 def secretPropsFile = file("${rootDir}/secrets.properties")
 
 def secretProps = new Properties()
@@ -20,8 +26,8 @@ if (secretPropsFile.exists()) {
 
 
 android {
-    namespace = "com.example.wuct"
-    compileSdk = 34
+    namespace = "com.wuct.app"
+    compileSdk = 35
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
@@ -33,14 +39,23 @@ android {
         jvmTarget = JavaVersion.VERSION_1_8
     }
 
+    signingConfigs {
+        release {
+            keyAlias keystoreProperties["keyAlias"]
+            keyPassword keystoreProperties["keyPassword"]
+            storeFile file(keystoreProperties["storeFile"])
+            storePassword keystoreProperties["storePassword"]
+        }
+    }
+
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.example.wuct"
+        applicationId "com.wuct.app"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         //may need to add equal signs to the last 3 lines of code in this default config portion if runing android gives errors
         minSdk 23
-        targetSdk 34
+        targetSdk 35
         versionCode flutter.versionCode
         versionName flutter.versionName
         manifestPlaceholders = [
@@ -52,7 +67,7 @@ android {
         release {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig = signingConfigs.debug
+            signingConfig = signingConfigs.release
         }
     }
 }

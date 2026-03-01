@@ -1,7 +1,7 @@
 name: wuct
 description: 'A new Flutter project.'
 publish_to: 'none'
-version: 0.2.0+2
+version: 0.2.0+3
 
 environment:
   sdk: ^3.5.3
@@ -33,9 +33,12 @@ dev_dependencies:
   flutter_lints: ^4.0.0
 
 flutter_launcher_icons:
-  android: "launcher_icon"
+  android: true
   ios: true
   image_path: "assets/WUCT_Home.png"
+  adaptive_icon_background: "#FFFFFF"
+  adaptive_icon_foreground: "assets/WUCT_Home.png"
+  remove_alpha_ios: true
   min_sdk_android: 21
 
 flutter:

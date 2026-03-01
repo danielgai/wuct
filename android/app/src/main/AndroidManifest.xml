@@ -1,5 +1,4 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.wuct">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- Add required permissions -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -9,7 +8,7 @@
 <!--        android:name="wuct"-->
     <application
         android:label="wuct"
-        android:icon="@mipmap/launcher_icon"
+        android:icon="@mipmap/ic_launcher"
         android:usesCleartextTraffic="true"> <!-- Allows HTTP traffic if needed -->
 
     <meta-data
