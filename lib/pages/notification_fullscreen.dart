@@ -95,8 +95,9 @@ class _NotificationFullscreenState extends State<NotificationFullscreen> {
             const SizedBox(height: 8),
 
             // Sender and Timestamp
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   'From: ${widget.notification.sender}',
